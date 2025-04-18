@@ -1,101 +1,42 @@
-let points = parseFloat(localStorage.getItem('momentumPoints')) || 0;
-let multiplier = parseFloat(localStorage.getItem('momentumMultiplier')) || 1;
-let completedChallenges = JSON.parse(localStorage.getItem('completedChallenges')) || [];
+let momentum = 0;
+let holding = false;
+let passiveGain = 0;
+let lastUpdateTime = Date.now();
 
-const pointsDisplay = document.getElementById("points");
-const clickerButton = document.getElementById("clicker");
-const challengesContainer = document.getElementById("challenges");
+// Passive gain while game is closed
+window.addEventListener("load", () => {
+    const savedTime = localStorage.getItem("lastClosedTime");
+    const savedMomentum = parseFloat(localStorage.getItem("momentum")) || 0;
 
-let isHolding = false;
-let passiveRate = 0;
+    if (savedTime) {
+        const timeDiff = Math.floor((Date.now() - parseInt(savedTime)) / 1000);
+        const offlineGain = timeDiff * passiveGain;
+        momentum = savedMomentum + offlineGain;
+    } else {
+        momentum = savedMomentum;
+    }
 
-// Handle holding down the button
-clickerButton.addEventListener("mousedown", () => isHolding = true);
-clickerButton.addEventListener("mouseup", () => isHolding = false);
-clickerButton.addEventListener("mouseleave", () => isHolding = false);
-clickerButton.addEventListener("touchstart", () => isHolding = true);
-clickerButton.addEventListener("touchend", () => isHolding = false);
+    document.getElementById("momentumCount").textContent = momentum.toFixed(2);
+});
 
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("momentum", momentum.toString());
+    localStorage.setItem("lastClosedTime", Date.now().toString());
+});
+
+document.getElementById("momentumButton").addEventListener("mousedown", () => holding = true);
+document.getElementById("momentumButton").addEventListener("mouseup", () => holding = false);
+document.getElementById("momentumButton").addEventListener("mouseleave", () => holding = false);
+
+// Momentum logic: earns points every 1000ms (1 point per second at base)
 setInterval(() => {
-  if (isHolding) {
-    points += 1 * multiplier;
-  }
-  points += passiveRate;
-  updateDisplay();
+    if (holding) {
+        momentum += 1;
+    }
+    momentum += passiveGain;
 }, 1000);
 
-function updateDisplay() {
-  pointsDisplay.textContent = points.toFixed(1);
-  localStorage.setItem('momentumPoints', points);
-}
-
-function saveChallenges() {
-  localStorage.setItem('completedChallenges', JSON.stringify(completedChallenges));
-  localStorage.setItem('momentumMultiplier', multiplier);
-  localStorage.setItem('passiveRate', passiveRate);
-}
-
-const savedRate = parseFloat(localStorage.getItem('passiveRate'));
-if (!isNaN(savedRate)) {
-  passiveRate = savedRate;
-}
-
-const challenges = [
-  {
-    id: "visualize",
-    text: "Do a 5-minute visualization exercise.",
-    multiplierBoost: 0.2
-  },
-  {
-    id: "walk",
-    text: "Take a 10-minute mindful walk.",
-    multiplierBoost: 0.3
-  },
-  {
-    id: "gratitude",
-    text: "Write down 3 things you’re grateful for.",
-    multiplierBoost: 0.5
-  },
-  {
-    id: "passiveGen",
-    text: "Sit in silence and focus on your breath for 5 minutes.",
-    passiveBoost: 0.5
-  }
-];
-
-function renderChallenges() {
-  challengesContainer.innerHTML = "";
-  challenges.forEach(ch => {
-    const card = document.createElement("div");
-    card.className = "challenge-card";
-    if (completedChallenges.includes(ch.id)) card.classList.add("completed");
-
-    card.innerHTML = `
-      <p>${ch.text}</p>
-      ${
-        completedChallenges.includes(ch.id)
-          ? `<strong>Completed!</strong>`
-          : `<button class="complete-btn" onclick="completeChallenge('${ch.id}')">Mark Complete</button>`
-      }
-    `;
-    challengesContainer.appendChild(card);
-  });
-}
-
-window.completeChallenge = function (id) {
-  const challenge = challenges.find(c => c.id === id);
-  if (challenge && !completedChallenges.includes(id)) {
-    completedChallenges.push(id);
-    if (challenge.multiplierBoost) {
-      multiplier += challenge.multiplierBoost;
-    }
-    if (challenge.passiveBoost) {
-      passiveRate += challenge.passiveBoost;
-    }
-    saveChallenges();
-    renderChallenges();
-  }
-};
-
-updateDisplay();
-renderChallenges();
+// Score display updates more frequently for smoother feel
+setInterval(() => {
+    document.getElementById("momentumCount").textContent = momentum.toFixed(2);
+}, 100);
