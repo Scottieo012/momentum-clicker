@@ -1,101 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momentum</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            font-size: 2em;
-        }
-        h2 {
-            font-size: 1em;
-            font-weight: normal;
-            color: #555;
-            margin-top: -10px;
-        }
-        #momentumButton {
-            padding: 20px;
-            font-size: 18px;
-            margin: 20px;
-            cursor: pointer;
-        }
-        .card {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #fff;
-            padding: 15px;
-            margin: 10px auto;
-            width: 300px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momentum</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="container">
     <h1>Welcome to Momentum!</h1>
-    <h2>An incremental transformation platform</h2>
+    <p class="subtitle">An incremental transformation platform</p>
 
-    <p>Momentum Points: <span id="momentumCount">0.00</span></p>
-    <button id="momentumButton">Hold for Momentum</button>
-
-    <div id="challengeCards">
-        <div class="card" id="challenge1">
-            <p>Challenge: Take 3 deep breaths and stretch</p>
-            <button onclick="completeChallenge(1)">I did it!</button>
-        </div>
+    <div class="momentum-display">
+      Momentum Points: <span id="momentum">0.00</span>
     </div>
 
-    <script>
-        let momentum = 0;
-        let holding = false;
-        let passiveGain = 0;
+    <button id="holdButton">Hold for Momentum</button>
 
-        window.addEventListener("load", () => {
-            const savedTime = localStorage.getItem("lastClosedTime");
-            const savedMomentum = parseFloat(localStorage.getItem("momentum")) || 0;
+    <div class="challenge-section">
+      <h2>Challenge Cards</h2>
+      <div id="challenges"></div>
+    </div>
+  </div>
 
-            if (savedTime) {
-                const timeDiff = Math.floor((Date.now() - parseInt(savedTime)) / 1000);
-                const offlineGain = timeDiff * passiveGain;
-                momentum = savedMomentum + offlineGain;
-            } else {
-                momentum = savedMomentum;
-            }
-
-            document.getElementById("momentumCount").textContent = momentum.toFixed(2);
-        });
-
-        window.addEventListener("beforeunload", () => {
-            localStorage.setItem("momentum", momentum.toString());
-            localStorage.setItem("lastClosedTime", Date.now().toString());
-        });
-
-        document.getElementById("momentumButton").addEventListener("mousedown", () => holding = true);
-        document.getElementById("momentumButton").addEventListener("mouseup", () => holding = false);
-        document.getElementById("momentumButton").addEventListener("mouseleave", () => holding = false);
-
-        setInterval(() => {
-            if (holding) {
-                momentum += 1;
-            }
-            momentum += passiveGain;
-        }, 1000);
-
-        setInterval(() => {
-            document.getElementById("momentumCount").textContent = momentum.toFixed(2);
-        }, 100);
-
-        function completeChallenge(id) {
-            if (id === 1) {
-                passiveGain += 0.5;
-                document.getElementById("challenge1").style.display = "none";
-            }
-        }
-    </script>
+  <script src="game.js"></script>
 </body>
 </html>
