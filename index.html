@@ -1,18 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Momentum Clicker + Challenge Cards</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momentum (an incremental transformation game)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f0f4f8;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    #holdButton {
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      margin: 1rem;
+      cursor: pointer;
+    }
+    .challenge-card {
+      border: 2px dashed #888;
+      padding: 1rem;
+      margin-top: 2rem;
+      display: inline-block;
+      max-width: 300px;
+      background: #fff;
+    }
+    .challenge-card.completed {
+      border-color: green;
+      background: #e6ffe6;
+    }
+  </style>
 </head>
 <body>
-  <h1>Momentum Clicker</h1>
-  <p>Momentum Points: <span id="points">0</span></p>
-  <button id="clicker">Click for Momentum</button>
+  <h1>Momentum (an incremental transformation game)</h1>
+  <p><strong>Momentum Points:</strong> <span id="momentum">0</span></p>
+  <button id="holdButton">Hold for Momentum</button>
 
-  <h2>Challenge Cards</h2>
-  <div id="challenges"></div>
+  <div class="challenge-card" id="challengeCard">
+    <h3>Challenge Card</h3>
+    <p>Complete: 5-minute visualization exercise</p>
+    <button onclick="completeChallenge()">I Did It</button>
+  </div>
 
-  <script src="game.js"></script>
-</body>
-</html>
+  <script>
+    let momentum = parseFloat(localStorage.getItem('momentum')) || 0;
+    let holding = false;
+    let challengeCompleted = localStorage.getItem('challengeCompleted') === 'true';
+
+    const momentumDisplay = document.getElementById('momentum');
+    const holdButton = document.getElementById('holdButton');
+    const challengeCard = document.getElementById('challengeCard');
+
+    function updateMomentumDisplay() {
+      momentumDisplay.textContent = momentum.toFixed(1);
+    }
+
+    // Passive gain per second if challenge is completed
+    setInterval(() => {
+      if (challengeCompleted) {
+        momentum += 0.5;
+        saveMomentum();
+        updateMomentumDisplay();
+      }
+    }, 1000);
+
+    // Hold-to-earn logic
+    holdButton.addEventListener('mousedown', () => {
+      holding = true;
+    });
+
+    document.addEventListener('mouseup', () => {
+      holding = false;
+    });
+
+    setInterval(() => {
+      if (holding) {
+        momentum += 0.1;
+        saveMomentum();
+        updateMomentumDisplay();
+      }
+    }, 100);
+
+    function completeChallenge() {
+      challengeCompleted = true;
+      localStorage.setItem('challengeCompleted', 'true');
+      challengeCard.classList.add('completed');
+    }
+
+    function saveMomentum() {
+      localStorage.setItem('momentum', momentum);
+    }
+
+    // Restore challenge card state on load
+    if (challengeCompleted) {
+      challengeCard.classList.add('completed');
+    }
+
+    updateMomentum
