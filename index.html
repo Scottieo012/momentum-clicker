@@ -28,10 +28,14 @@
       display: inline-block;
       max-width: 300px;
       background: #fff;
+      transition: 0.3s;
     }
     .challenge-card.completed {
       border-color: green;
       background: #e6ffe6;
+    }
+    .challenge-card button {
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -43,7 +47,7 @@
   <div class="challenge-card" id="challengeCard">
     <h3>Challenge Card</h3>
     <p>Complete: 5-minute visualization exercise</p>
-    <button onclick="completeChallenge()">I Did It</button>
+    <button id="completeBtn">I Did It</button>
   </div>
 
   <script>
@@ -54,12 +58,30 @@
     const momentumDisplay = document.getElementById('momentum');
     const holdButton = document.getElementById('holdButton');
     const challengeCard = document.getElementById('challengeCard');
+    const completeBtn = document.getElementById('completeBtn');
 
     function updateMomentumDisplay() {
       momentumDisplay.textContent = momentum.toFixed(2);
     }
 
-    // Passive gain per second if challenge is completed
+    function saveMomentum() {
+      localStorage.setItem('momentum', momentum);
+    }
+
+    function completeChallenge() {
+      challengeCompleted = true;
+      localStorage.setItem('challengeCompleted', 'true');
+      challengeCard.classList.add('completed');
+      completeBtn.disabled = true;
+      completeBtn.textContent = "Completed!";
+    }
+
+    // Restore challenge card state on load
+    if (challengeCompleted) {
+      completeChallenge();
+    }
+
+    // Passive gain every second if challenge completed
     setInterval(() => {
       if (challengeCompleted) {
         momentum += 0.5;
@@ -68,37 +90,42 @@
       }
     }, 1000);
 
-    // Hold-to-earn logic (1 point per second)
+    // Hold-to-earn mechanic
+    let holdInterval;
+
     holdButton.addEventListener('mousedown', () => {
-      holding = true;
+      if (!holdInterval) {
+        holdInterval = setInterval(() => {
+          momentum += 1;
+          saveMomentum();
+          updateMomentumDisplay();
+        }, 1000);
+      }
     });
 
     document.addEventListener('mouseup', () => {
-      holding = false;
+      clearInterval(holdInterval);
+      holdInterval = null;
     });
 
-    setInterval(() => {
-      if (holding) {
-        momentum += 1;
-        saveMomentum();
-        updateMomentumDisplay();
+    // Touch support for mobile
+    holdButton.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // prevents double tap zoom
+      if (!holdInterval) {
+        holdInterval = setInterval(() => {
+          momentum += 1;
+          saveMomentum();
+          updateMomentumDisplay();
+        }, 1000);
       }
-    }, 1000); // every 1 second
+    });
 
-    function completeChallenge() {
-      challengeCompleted = true;
-      localStorage.setItem('challengeCompleted', 'true');
-      challengeCard.classList.add('completed');
-    }
+    document.addEventListener('touchend', () => {
+      clearInterval(holdInterval);
+      holdInterval = null;
+    });
 
-    function saveMomentum() {
-      localStorage.setItem('momentum', momentum);
-    }
-
-    // Restore challenge card state on load
-    if (challengeCompleted) {
-      challengeCard.classList.add('completed');
-    }
+    completeBtn.addEventListener('click', completeChallenge);
 
     updateMomentumDisplay();
   </script>
