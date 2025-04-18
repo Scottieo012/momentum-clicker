@@ -37,7 +37,7 @@
 </head>
 <body>
   <h1>Momentum (an incremental transformation game)</h1>
-  <p><strong>Momentum Points:</strong> <span id="momentum">0</span></p>
+  <p><strong>Momentum Points:</strong> <span id="momentum">0.00</span></p>
   <button id="holdButton">Hold for Momentum</button>
 
   <div class="challenge-card" id="challengeCard">
@@ -56,7 +56,7 @@
     const challengeCard = document.getElementById('challengeCard');
 
     function updateMomentumDisplay() {
-      momentumDisplay.textContent = momentum.toFixed(1);
+      momentumDisplay.textContent = momentum.toFixed(2);
     }
 
     // Passive gain per second if challenge is completed
@@ -68,7 +68,7 @@
       }
     }, 1000);
 
-    // Hold-to-earn logic
+    // Hold-to-earn logic (1 point per second)
     holdButton.addEventListener('mousedown', () => {
       holding = true;
     });
@@ -79,11 +79,11 @@
 
     setInterval(() => {
       if (holding) {
-        momentum += 0.1;
+        momentum += 1;
         saveMomentum();
         updateMomentumDisplay();
       }
-    }, 100);
+    }, 1000); // every 1 second
 
     function completeChallenge() {
       challengeCompleted = true;
@@ -100,4 +100,7 @@
       challengeCard.classList.add('completed');
     }
 
-    updateMomentum
+    updateMomentumDisplay();
+  </script>
+</body>
+</html>
