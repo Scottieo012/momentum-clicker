@@ -2,33 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Momentum Clicker</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; }
-    #clicker { font-size: 24px; padding: 20px 40px; margin-top: 20px; }
-  </style>
+  <title>Momentum Clicker + Challenge Cards</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Momentum Clicker</h1>
   <p>Momentum Points: <span id="points">0</span></p>
   <button id="clicker">Click for Momentum</button>
 
-  <script>
-    let points = parseInt(localStorage.getItem('momentumPoints')) || 0;
-    const pointsDisplay = document.getElementById("points");
-    const clickerButton = document.getElementById("clicker");
+  <h2>Challenge Cards</h2>
+  <div id="challenges"></div>
 
-    function updateDisplay() {
-      pointsDisplay.textContent = points;
-      localStorage.setItem('momentumPoints', points);
-    }
-
-    clickerButton.addEventListener("click", () => {
-      points += 1;
-      updateDisplay();
-    });
-
-    updateDisplay();
-  </script>
+  <script src="game.js"></script>
 </body>
 </html>
