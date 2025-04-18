@@ -1,0 +1,26 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 50px;
+}
+#clicker {
+  font-size: 24px;
+  padding: 20px 40px;
+  margin-top: 20px;
+}
+.challenge-card {
+  border: 2px solid #aaa;
+  padding: 15px;
+  margin: 20px auto;
+  width: 300px;
+  border-radius: 8px;
+}
+button.complete-btn {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+.completed {
+  background-color: #e0ffe0;
+  border-color: #4caf50;
+}
