@@ -3,131 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Momentum (an incremental transformation game)</title>
+  <title>Momentum</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 2rem;
-      background: #f0f4f8;
+      margin: 30px;
     }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      font-size: 2.5em;
     }
-    #holdButton {
-      padding: 1rem 2rem;
-      font-size: 1.5rem;
-      margin: 1rem;
-      cursor: pointer;
+    h2 {
+      font-size: 1.2em;
+      color: #666;
+      margin-top: -10px;
+      margin-bottom: 30px;
+    }
+    .momentum-button {
+      font-size: 1.2em;
+      padding: 20px;
+      margin-top: 20px;
     }
     .challenge-card {
-      border: 2px dashed #888;
-      padding: 1rem;
-      margin-top: 2rem;
-      display: inline-block;
-      max-width: 300px;
-      background: #fff;
-      transition: 0.3s;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin: 20px auto;
+      width: 300px;
     }
-    .challenge-card.completed {
-      border-color: green;
-      background: #e6ffe6;
-    }
-    .challenge-card button {
-      margin-top: 1rem;
+    #offlineMessage {
+      color: green;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Momentum (an incremental transformation game)</h1>
-  <p><strong>Momentum Points:</strong> <span id="momentum">0.00</span></p>
-  <button id="holdButton">Hold for Momentum</button>
+  <h1>Welcome to Momentum!</h1>
+  <h2>An incremental transformation platform</h2>
 
-  <div class="challenge-card" id="challengeCard">
-    <h3>Challenge Card</h3>
-    <p>Complete: 5-minute visualization exercise</p>
-    <button id="completeBtn">I Did It</button>
+  <div>
+    <strong>Momentum Points:</strong> <span id="points">0.00</span>
   </div>
 
+  <button class="momentum-button" id="momentumButton">Hold for Momentum</button>
+
+  <div class="challenge-card" id="challenge1">
+    <p><strong>Challenge:</strong> Do 1 minute of deep breathing.</p>
+    <button onclick="completeChallenge(1)">I did it</button>
+  </div>
+
+  <div id="offlineMessage"></div>
+
   <script>
-    let momentum = parseFloat(localStorage.getItem('momentum')) || 0;
+    let points = parseFloat(localStorage.getItem('points')) || 0;
     let holding = false;
-    let challengeCompleted = localStorage.getItem('challengeCompleted') === 'true';
+    let passiveRate = parseFloat(localStorage.getItem('passiveRate')) || 0;
+    const pointsDisplay = document.getElementById('points');
+    const offlineMessage = document.getElementById('offlineMessage');
 
-    const momentumDisplay = document.getElementById('momentum');
-    const holdButton = document.getElementById('holdButton');
-    const challengeCard = document.getElementById('challengeCard');
-    const completeBtn = document.getElementById('completeBtn');
-
-    function updateMomentumDisplay() {
-      momentumDisplay.textContent = momentum.toFixed(2);
+    function updateDisplay() {
+      pointsDisplay.textContent = points.toFixed(2);
     }
 
-    function saveMomentum() {
-      localStorage.setItem('momentum', momentum);
+    function earnPoints(rate = 1) {
+      points += rate;
+      updateDisplay();
+      localStorage.setItem('points', points);
     }
 
-    function completeChallenge() {
-      challengeCompleted = true;
-      localStorage.setItem('challengeCompleted', 'true');
-      challengeCard.classList.add('completed');
-      completeBtn.disabled = true;
-      completeBtn.textContent = "Completed!";
-    }
-
-    // Restore challenge card state on load
-    if (challengeCompleted) {
-      completeChallenge();
-    }
-
-    // Passive gain every second if challenge completed
-    setInterval(() => {
-      if (challengeCompleted) {
-        momentum += 0.5;
-        saveMomentum();
-        updateMomentumDisplay();
+    function completeChallenge(id) {
+      if (id === 1 && !localStorage.getItem('challenge1Done')) {
+        passiveRate += 0.5;
+        localStorage.setItem('passiveRate', passiveRate);
+        localStorage.setItem('challenge1Done', 'true');
+        document.getElementById('challenge1').style.display = 'none';
       }
-    }, 1000);
+    }
 
     // Hold-to-earn mechanic
-    let holdInterval;
+    const button = document.getElementById('momentumButton');
+    button.addEventListener('mousedown', () => holding = true);
+    button.addEventListener('mouseup', () => holding = false);
+    button.addEventListener('mouseleave', () => holding = false);
 
-    holdButton.addEventListener('mousedown', () => {
-      if (!holdInterval) {
-        holdInterval = setInterval(() => {
-          momentum += 1;
-          saveMomentum();
-          updateMomentumDisplay();
-        }, 1000);
-      }
-    });
+    setInterval(() => {
+      if (holding) earnPoints(1); // 1 point per second
+      if (passiveRate > 0) earnPoints(passiveRate);
+    }, 1000);
 
-    document.addEventListener('mouseup', () => {
-      clearInterval(holdInterval);
-      holdInterval = null;
-    });
+    // Offline progress logic
+    const now = Date.now();
+    const lastActive = parseInt(localStorage.getItem('lastActive') || now);
+    const timeAway = Math.floor((now - lastActive) / 1000); // seconds away
 
-    // Touch support for mobile
-    holdButton.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // prevents double tap zoom
-      if (!holdInterval) {
-        holdInterval = setInterval(() => {
-          momentum += 1;
-          saveMomentum();
-          updateMomentumDisplay();
-        }, 1000);
-      }
-    });
+    if (timeAway > 5) {
+      const offlineEarnings = passiveRate * timeAway;
+      points += offlineEarnings;
+      offlineMessage.textContent = `Welcome back! You earned ${offlineEarnings.toFixed(2)} Momentum Points while you were away.`;
+    }
 
-    document.addEventListener('touchend', () => {
-      clearInterval(holdInterval);
-      holdInterval = null;
-    });
+    updateDisplay();
+    localStorage.setItem('lastActive', now);
 
-    completeBtn.addEventListener('click', completeChallenge);
-
-    updateMomentumDisplay();
+    // Save last active timestamp every 5 seconds
+    setInterval(() => {
+      localStorage.setItem('lastActive', Date.now());
+    }, 5000);
   </script>
 </body>
 </html>
