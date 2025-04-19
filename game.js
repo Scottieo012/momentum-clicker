@@ -1,94 +1,92 @@
 let momentum = 0;
-let momentumRate = 1; // Starting rate per second from holding
-let passiveRate = 0; // Passive gain from completed challenges
-let holding = false;
+let passiveGain = 0;
+let held = false;
 let lastUpdateTime = Date.now();
+let challengeCompleted = false;
 
 // Load saved data
-window.onload = function () {
-  const savedMomentum = localStorage.getItem('momentum');
-  const savedPassiveRate = localStorage.getItem('passiveRate');
-  if (savedMomentum) momentum = parseFloat(savedMomentum);
-  if (savedPassiveRate) passiveRate = parseFloat(savedPassiveRate);
-  updateMomentumDisplay();
-  generateChallenges();
+window.onload = () => {
+    const saved = localStorage.getItem("momentumData");
+    if (saved) {
+        const data = JSON.parse(saved);
+        momentum = data.momentum || 0;
+        passiveGain = data.passiveGain || 0;
+        challengeCompleted = data.challengeCompleted || false;
+
+        // If the tab was closed for a while, simulate offline progress
+        if (data.lastUpdateTime) {
+            const elapsed = (Date.now() - data.lastUpdateTime) / 1000;
+            momentum += elapsed * passiveGain;
+        }
+
+        updateChallengeCard();
+    }
+
+    updateDisplay();
 };
 
-// Update momentum smoothly
-function update() {
-  const now = Date.now();
-  const delta = (now - lastUpdateTime) / 1000;
-
-  if (holding) {
-    momentum += momentumRate * delta;
-  }
-
-  if (passiveRate > 0) {
-    momentum += passiveRate * delta;
-  }
-
-  updateMomentumDisplay();
-  lastUpdateTime = now;
-  requestAnimationFrame(update);
+// Save data periodically and when tab is closed
+function saveGame() {
+    localStorage.setItem("momentumData", JSON.stringify({
+        momentum,
+        passiveGain,
+        challengeCompleted,
+        lastUpdateTime: Date.now()
+    }));
 }
+setInterval(saveGame, 5000);
+window.onbeforeunload = saveGame;
 
-function updateMomentumDisplay() {
-  document.getElementById('momentum').textContent = momentum.toFixed(2);
-  localStorage.setItem('momentum', momentum.toFixed(2));
-  localStorage.setItem('passiveRate', passiveRate.toFixed(2));
+// Display update
+function updateDisplay() {
+    document.getElementById("momentumDisplay").innerText = momentum.toFixed(2);
 }
 
 // Hold-to-earn logic
-const holdButton = document.getElementById('holdButton');
-holdButton.addEventListener('mousedown', () => { holding = true; });
-holdButton.addEventListener('mouseup', () => { holding = false; });
-holdButton.addEventListener('mouseleave', () => { holding = false; });
-holdButton.addEventListener('touchstart', (e) => {
-  e.preventDefault();
-  holding = true;
-});
-holdButton.addEventListener('touchend', () => { holding = false; });
+const earnButton = document.getElementById("earnButton");
+earnButton.addEventListener("mousedown", () => held = true);
+earnButton.addEventListener("touchstart", () => held = true);
+earnButton.addEventListener("mouseup", () => held = false);
+earnButton.addEventListener("mouseleave", () => held = false);
+earnButton.addEventListener("touchend", () => held = false);
+earnButton.addEventListener("touchcancel", () => held = false);
 
-// Challenge system
-const challenges = [
-  {
-    title: "Do 1 set of pushups",
-    description: "Complete a set of pushups and click 'I did it!' to gain passive momentum.",
-    reward: () => { passiveRate += 0.5; },
-    completed: false
-  }
-];
+// Momentum update loop
+function gameLoop() {
+    const now = Date.now();
+    const delta = (now - lastUpdateTime) / 1000;
+    lastUpdateTime = now;
 
-function generateChallenges() {
-  const challengeContainer = document.getElementById('challenges');
-  challengeContainer.innerHTML = '';
+    if (held) {
+        momentum += 1 * delta;
+    }
 
-  challenges.forEach((challenge, index) => {
-    if (challenge.completed) return;
+    if (passiveGain > 0) {
+        momentum += passiveGain * delta;
+    }
 
-    const card = document.createElement('div');
-    card.className = 'challenge-card';
+    updateDisplay();
+    requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);
 
-    const title = document.createElement('h3');
-    title.textContent = challenge.title;
-
-    const desc = document.createElement('p');
-    desc.textContent = challenge.description;
-
-    const button = document.createElement('button');
-    button.textContent = "I did it!";
-    button.addEventListener('click', () => {
-      challenge.reward();
-      challenge.completed = true;
-      generateChallenges();
-    });
-
-    card.appendChild(title);
-    card.appendChild(desc);
-    card.appendChild(button);
-
-    challengeContainer.appendChild(card);
-  });
+// Challenge Card logic
+function updateChallengeCard() {
+    const cardButton = document.getElementById("challengeButton");
+    if (challengeCompleted) {
+        cardButton.disabled = true;
+        cardButton.innerText = "Completed!";
+    } else {
+        cardButton.disabled = false;
+        cardButton.innerText = "I did it!";
+    }
 }
 
-requestAnimationFrame(update);
+document.getElementById("challengeButton").addEventListener("click", () => {
+    if (!challengeCompleted) {
+        challengeCompleted = true;
+        passiveGain += 0.5;
+        updateChallengeCard();
+        saveGame();
+    }
+});
