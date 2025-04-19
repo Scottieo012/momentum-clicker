@@ -1,80 +1,58 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
   text-align: center;
+  background: #f0f4f8;
+  color: #333;
   margin: 0;
   padding: 0;
 }
 
 .container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  padding: 40px;
 }
 
 h1 {
-  font-size: 2em;
-  margin-bottom: 0.2em;
+  font-size: 2.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .subtitle {
-  font-size: 0.9em;
-  color: #777;
-  margin-top: 0;
-  margin-bottom: 1.5em;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .momentum-display {
-  font-size: 1.5em;
-  margin: 1em 0;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
-#holdButton {
-  padding: 15px 30px;
-  font-size: 1.2em;
-  background-color: #4caf50;
-  color: white;
+button {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  margin: 10px;
   border: none;
   border-radius: 8px;
+  background-color: #4caf50;
+  color: white;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-#holdButton:hover {
+button:hover:not(:disabled) {
   background-color: #45a049;
 }
 
-.challenge-section {
-  margin-top: 2em;
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 
 .challenge-card {
-  background-color: #e3f2fd;
-  border: 1px solid #90caf9;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  text-align: left;
-}
-
-.challenge-card h3 {
-  margin-top: 0;
-}
-
-.challenge-card button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  font-size: 1em;
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.challenge-card button:hover {
-  background-color: #1976d2;
+  margin-top: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: inline-block;
 }
