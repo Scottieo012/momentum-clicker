@@ -1,92 +1,128 @@
 let momentum = 0;
-let passiveGain = 0;
-let held = false;
+let isHolding = false;
 let lastUpdateTime = Date.now();
-let challengeCompleted = false;
+let passiveRate = 0;
+const challengeCards = [
+  {
+    id: 1,
+    text: "Do a 5-minute breathing exercise",
+    baseMultiplier: 0.5,
+    multiplierIncrement: 0.1,
+    timesCompleted: 0,
+    baseCost: 10,
+    costIncrease: 1.15,
+  },
+  {
+    id: 2,
+    text: "Write down 3 things you’re grateful for",
+    baseMultiplier: 0.2,
+    multiplierIncrement: 0.05,
+    timesCompleted: 0,
+    baseCost: 5,
+    costIncrease: 1.10,
+  },
+  {
+    id: 3,
+    text: "Visualize your ideal day for 3 minutes",
+    baseMultiplier: 0.3,
+    multiplierIncrement: 0.07,
+    timesCompleted: 0,
+    baseCost: 8,
+    costIncrease: 1.12,
+  }
+];
 
-// Load saved data
-window.onload = () => {
-    const saved = localStorage.getItem("momentumData");
-    if (saved) {
-        const data = JSON.parse(saved);
-        momentum = data.momentum || 0;
-        passiveGain = data.passiveGain || 0;
-        challengeCompleted = data.challengeCompleted || false;
+function updateMomentumDisplay() {
+  document.getElementById("momentum").textContent = momentum.toFixed(2);
+}
 
-        // If the tab was closed for a while, simulate offline progress
-        if (data.lastUpdateTime) {
-            const elapsed = (Date.now() - data.lastUpdateTime) / 1000;
-            momentum += elapsed * passiveGain;
-        }
+function earnMomentum(deltaTime) {
+  if (isHolding) {
+    momentum += deltaTime * 0.001;
+  }
+  momentum += (deltaTime * passiveRate) * 0.001;
+  updateMomentumDisplay();
+}
 
-        updateChallengeCard();
-    }
+function setupHoldButton() {
+  const button = document.getElementById("earnButton");
+  button.addEventListener("mousedown", () => isHolding = true);
+  button.addEventListener("mouseup", () => isHolding = false);
+  button.addEventListener("mouseleave", () => isHolding = false);
+  button.addEventListener("touchstart", () => isHolding = true);
+  button.addEventListener("touchend", () => isHolding = false);
+}
 
-    updateDisplay();
-};
+function renderChallengeCards() {
+  const container = document.getElementById("challengeContainer");
+  container.innerHTML = "";
+  challengeCards.forEach(card => {
+    const cost = card.baseCost * Math.pow(card.costIncrease, card.timesCompleted);
+    const div = document.createElement("div");
+    div.className = "challenge-card";
+    div.innerHTML = `
+      <p><strong>Challenge:</strong> ${card.text}</p>
+      <p><strong>Multiplier:</strong> +${(card.baseMultiplier + card.multiplierIncrement * card.timesCompleted).toFixed(2)} per second</p>
+      <p><strong>Cost:</strong> ${cost.toFixed(2)} Momentum Points</p>
+      <p><strong>Completed:</strong> ${card.timesCompleted} time(s)</p>
+      <button onclick="completeChallenge(${card.id})">I did it</button>
+    `;
+    container.appendChild(div);
+  });
+}
 
-// Save data periodically and when tab is closed
+function completeChallenge(id) {
+  const card = challengeCards.find(c => c.id === id);
+  const cost = card.baseCost * Math.pow(card.costIncrease, card.timesCompleted);
+  if (momentum >= cost) {
+    momentum -= cost;
+    card.timesCompleted += 1;
+    passiveRate += card.baseMultiplier + card.multiplierIncrement * (card.timesCompleted - 1);
+    renderChallengeCards();
+    updateMomentumDisplay();
+    saveGame();
+  } else {
+    alert("Not enough Momentum Points!");
+  }
+}
+
 function saveGame() {
-    localStorage.setItem("momentumData", JSON.stringify({
-        momentum,
-        passiveGain,
-        challengeCompleted,
-        lastUpdateTime: Date.now()
-    }));
-}
-setInterval(saveGame, 5000);
-window.onbeforeunload = saveGame;
-
-// Display update
-function updateDisplay() {
-    document.getElementById("momentumDisplay").innerText = momentum.toFixed(2);
+  const data = {
+    momentum,
+    passiveRate,
+    challengeCards: challengeCards.map(c => c.timesCompleted),
+    lastSaveTime: Date.now()
+  };
+  localStorage.setItem("momentumGame", JSON.stringify(data));
 }
 
-// Hold-to-earn logic
-const earnButton = document.getElementById("earnButton");
-earnButton.addEventListener("mousedown", () => held = true);
-earnButton.addEventListener("touchstart", () => held = true);
-earnButton.addEventListener("mouseup", () => held = false);
-earnButton.addEventListener("mouseleave", () => held = false);
-earnButton.addEventListener("touchend", () => held = false);
-earnButton.addEventListener("touchcancel", () => held = false);
+function loadGame() {
+  const saved = localStorage.getItem("momentumGame");
+  if (saved) {
+    const data = JSON.parse(saved);
+    momentum = data.momentum;
+    passiveRate = data.passiveRate;
+    data.challengeCards.forEach((count, index) => {
+      challengeCards[index].timesCompleted = count;
+    });
+    const elapsed = (Date.now() - data.lastSaveTime) / 1000;
+    momentum += elapsed * passiveRate;
+  }
+}
 
-// Momentum update loop
 function gameLoop() {
-    const now = Date.now();
-    const delta = (now - lastUpdateTime) / 1000;
-    lastUpdateTime = now;
-
-    if (held) {
-        momentum += 1 * delta;
-    }
-
-    if (passiveGain > 0) {
-        momentum += passiveGain * delta;
-    }
-
-    updateDisplay();
-    requestAnimationFrame(gameLoop);
-}
-requestAnimationFrame(gameLoop);
-
-// Challenge Card logic
-function updateChallengeCard() {
-    const cardButton = document.getElementById("challengeButton");
-    if (challengeCompleted) {
-        cardButton.disabled = true;
-        cardButton.innerText = "Completed!";
-    } else {
-        cardButton.disabled = false;
-        cardButton.innerText = "I did it!";
-    }
+  const now = Date.now();
+  const deltaTime = now - lastUpdateTime;
+  lastUpdateTime = now;
+  earnMomentum(deltaTime);
+  requestAnimationFrame(gameLoop);
 }
 
-document.getElementById("challengeButton").addEventListener("click", () => {
-    if (!challengeCompleted) {
-        challengeCompleted = true;
-        passiveGain += 0.5;
-        updateChallengeCard();
-        saveGame();
-    }
-});
+window.onload = () => {
+  loadGame();
+  setupHoldButton();
+  renderChallengeCards();
+  updateMomentumDisplay();
+  gameLoop();
+  setInterval(saveGame, 3000);
+};
