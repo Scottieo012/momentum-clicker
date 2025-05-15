@@ -21,7 +21,7 @@ h1 {
   font-weight: bold;
 }
 
-#momentumRate {
+.momentum-rate {
   font-size: 16px;
   color: #555;
   margin-bottom: 20px;
@@ -32,14 +32,16 @@ h1 {
 }
 
 .earn-button {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   font-size: 16px;
-  background-color: #4CAF50;
+  font-weight: bold;
+  background-color: #008CBA;
   color: white;
   border: none;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .challenge-container {
