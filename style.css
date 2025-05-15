@@ -1,77 +1,102 @@
+/* General Reset and Styling */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   background-color: #f4f4f4;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  -webkit-user-select: none;  /* Prevents text selection on iOS Safari */
+  -ms-user-select: none;      /* Prevents text selection on IE/Edge */
+  user-select: none;          /* Prevents text selection on modern browsers */
 }
 
 h1 {
-  margin-bottom: 5px;
+  margin-top: 20px;
+  font-size: 2em;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 30px;
-}
-
-.momentum-counter {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.momentum-rate {
-  font-size: 16px;
-  color: #555;
+  font-size: 1em;
+  color: #666;
   margin-bottom: 20px;
 }
 
+.momentum-counter {
+  font-size: 1.5em;
+  margin-bottom: 5px;
+}
+
+.momentum-per-second {
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Momentum Button Styling */
 .button-container {
-  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .earn-button {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: #008CBA;
-  color: white;
   border: none;
+  background-color: #3498db;
+  color: white;
+  font-size: 1em;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  -webkit-touch-callout: none;   /* Prevent iOS long press popup */
+  touch-action: manipulation;    /* Improves touch responsiveness */
 }
 
+.earn-button:active {
+  background-color: #2980b9;
+}
+
+/* Challenge Card Styling */
 .challenge-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-top: 30px;
+  margin-right: 20px;
+  gap: 15px;
 }
 
 .challenge-card {
   background-color: white;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   padding: 15px;
-  margin: 10px;
   width: 250px;
   text-align: left;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .challenge-card h3 {
   margin-top: 0;
 }
 
-.challenge-info {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 5px;
+.challenge-card button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+.challenge-card button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
 }
 
 .cooldown-timer {
-  font-size: 13px;
-  color: #c00;
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 5px;
 }
