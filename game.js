@@ -1,119 +1,118 @@
 let momentum = 0;
-let passiveMomentum = 0;
-let lastUpdate = Date.now();
-
-const momentumDisplay = document.getElementById("momentum");
-const momentumRateDisplay = document.getElementById("momentumRate");
-const earnButton = document.getElementById("earnButton");
-const challengeContainer = document.getElementById("challengeContainer");
-
+let passiveRate = 0;
 let isHolding = false;
-
-function formatNumber(num) {
-  return num.toFixed(2);
-}
+let holdInterval;
+let cooldowns = {};
 
 function updateDisplay() {
-  momentumDisplay.textContent = formatNumber(momentum);
-  momentumRateDisplay.textContent = `+${formatNumber(passiveMomentum)} / sec`;
+  document.getElementById("momentum").textContent = momentum.toFixed(2);
+  document.getElementById("momentumRate").textContent = `Momentum/sec: ${(passiveRate + (isHolding ? 1 : 0)).toFixed(2)}`;
 }
 
-function gameLoop() {
-  const now = Date.now();
-  const deltaSeconds = (now - lastUpdate) / 1000;
-  lastUpdate = now;
+function startHolding() {
+  isHolding = true;
+  holdInterval = setInterval(() => {
+    momentum += 1;
+    updateDisplay();
+  }, 1000);
+}
 
-  if (isHolding) {
-    momentum += 1 * deltaSeconds;
-  }
-
-  momentum += passiveMomentum * deltaSeconds;
+function stopHolding() {
+  isHolding = false;
+  clearInterval(holdInterval);
   updateDisplay();
-
-  requestAnimationFrame(gameLoop);
 }
 
-earnButton.addEventListener("mousedown", () => (isHolding = true));
-earnButton.addEventListener("mouseup", () => (isHolding = false));
-earnButton.addEventListener("mouseleave", () => (isHolding = false));
-earnButton.addEventListener("touchstart", () => (isHolding = true));
-earnButton.addEventListener("touchend", () => (isHolding = false));
+function updatePassiveMomentum() {
+  momentum += passiveRate / 10;
+  updateDisplay();
+}
 
-// Load challenge cards from cards.js
+function calculateCost(card) {
+  return (card.baseCost * Math.pow(1.15, card.timesCompleted)).toFixed(2);
+}
+
 function renderChallengeCards() {
-  challengeContainer.innerHTML = "";
-  challengeCards.forEach((card) => {
+  const container = document.getElementById("challengeContainer");
+  container.innerHTML = "";
+
+  challengeCards.forEach(card => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "challenge-card";
-    card.dom = cardDiv; // Store reference for updating cooldown
 
     const title = document.createElement("h3");
     title.textContent = card.title;
 
     const description = document.createElement("p");
+    description.className = "challenge-info";
     description.textContent = card.description;
 
+    const cost = document.createElement("p");
+    cost.className = "challenge-info";
+    cost.textContent = `Cost: ${calculateCost(card)} Momentum`;
+
+    const times = document.createElement("p");
+    times.className = "challenge-info";
+    times.textContent = `Completed: ${card.timesCompleted}`;
+
+    const cooldownTimer = document.createElement("p");
+    cooldownTimer.className = "cooldown-timer";
+    cooldownTimer.id = `cooldown-${card.id}`;
+
     const button = document.createElement("button");
-    button.textContent = "I did it";
-    button.disabled = false;
+    button.textContent = "I did it!";
+    button.disabled = isInCooldown(card);
 
-    const info = document.createElement("p");
-    info.className = "challenge-info";
-    info.textContent = `Owned: ${card.count} | +${card.reward}/sec | Cost: ${formatNumber(card.cost)} MP`;
+    button.onclick = () => {
+      const cost = parseFloat(calculateCost(card));
+      if (momentum >= cost && !isInCooldown(card)) {
+        momentum -= cost;
+        card.timesCompleted += 1;
+        passiveRate += card.multiplier;
 
-    const cooldown = document.createElement("p");
-    cooldown.className = "cooldown-timer";
-
-    button.addEventListener("click", () => {
-      if (momentum >= card.cost && !card.cooldownUntil) {
-        momentum -= card.cost;
-        card.count++;
-        card.cost *= 1.15;
-        passiveMomentum += card.reward;
-
-        card.cooldownUntil = Date.now() + 5 * 60 * 1000; // 5 minutes
-        button.disabled = true;
-
-        updateCardUI(card);
+        card.lastCompletedTime = Date.now();
+        updateDisplay();
+        renderChallengeCards();
       }
-    });
+    };
 
     cardDiv.appendChild(title);
     cardDiv.appendChild(description);
-    cardDiv.appendChild(info);
+    cardDiv.appendChild(cost);
+    cardDiv.appendChild(times);
     cardDiv.appendChild(button);
-    cardDiv.appendChild(cooldown);
-    challengeContainer.appendChild(cardDiv);
-
-    card.button = button;
-    card.info = info;
-    card.cooldownDisplay = cooldown;
+    cardDiv.appendChild(cooldownTimer);
+    container.appendChild(cardDiv);
   });
 }
 
-function updateCardUI(card) {
-  card.info.textContent = `Owned: ${card.count} | +${card.reward}/sec | Cost: ${formatNumber(card.cost)} MP`;
+function isInCooldown(card) {
+  const now = Date.now();
+  const elapsed = now - card.lastCompletedTime;
+  return elapsed < 5 * 60 * 1000; // 5 minutes
 }
 
 function updateCooldowns() {
-  const now = Date.now();
-  challengeCards.forEach((card) => {
-    if (card.cooldownUntil) {
-      const remaining = card.cooldownUntil - now;
-      if (remaining <= 0) {
-        card.cooldownUntil = null;
-        card.button.disabled = false;
-        card.cooldownDisplay.textContent = "";
-      } else {
-        const minutes = Math.floor(remaining / 60000);
-        const seconds = Math.floor((remaining % 60000) / 1000);
-        card.cooldownDisplay.textContent = `Cooldown: ${minutes}:${seconds.toString().padStart(2, "0")}`;
-      }
+  challengeCards.forEach(card => {
+    const cooldownText = document.getElementById(`cooldown-${card.id}`);
+    const remaining = 5 * 60 * 1000 - (Date.now() - card.lastCompletedTime);
+
+    if (cooldownText && remaining > 0) {
+      const minutes = Math.floor(remaining / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      cooldownText.textContent = `Cooldown: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    } else if (cooldownText) {
+      cooldownText.textContent = "";
     }
   });
+  renderChallengeCards();
 }
 
-setInterval(updateCooldowns, 1000);
-
-renderChallengeCards();
-gameLoop();
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("earnButton").addEventListener("mousedown", startHolding);
+  document.getElementById("earnButton").addEventListener("mouseup", stopHolding);
+  document.getElementById("earnButton").addEventListener("mouseleave", stopHolding);
+  renderChallengeCards();
+  setInterval(updatePassiveMomentum, 100);
+  setInterval(updateCooldowns, 1000);
+});
