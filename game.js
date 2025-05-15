@@ -1,130 +1,119 @@
-// game.js
 let momentum = 0;
-let passiveRate = 0;
-let isHolding = false;
-let holdStartTime = null;
+let passiveMomentum = 0;
+let lastUpdate = Date.now();
 
 const momentumDisplay = document.getElementById("momentum");
+const momentumRateDisplay = document.getElementById("momentumRate");
 const earnButton = document.getElementById("earnButton");
 const challengeContainer = document.getElementById("challengeContainer");
 
-function updateMomentumDisplay() {
-  momentumDisplay.textContent = momentum.toFixed(2);
+let isHolding = false;
+
+function formatNumber(num) {
+  return num.toFixed(2);
 }
 
-function incrementMomentum(deltaTime) {
-  if (isHolding) {
-    momentum += deltaTime;
-  }
-  momentum += passiveRate * deltaTime;
-  updateMomentumDisplay();
+function updateDisplay() {
+  momentumDisplay.textContent = formatNumber(momentum);
+  momentumRateDisplay.textContent = `+${formatNumber(passiveMomentum)} / sec`;
 }
 
-let lastUpdateTime = Date.now();
-setInterval(() => {
+function gameLoop() {
   const now = Date.now();
-  const deltaTime = (now - lastUpdateTime) / 1000;
-  lastUpdateTime = now;
-  incrementMomentum(deltaTime);
-  saveGame();
-}, 100);
+  const deltaSeconds = (now - lastUpdate) / 1000;
+  lastUpdate = now;
 
-// Holding mechanics
-earnButton.addEventListener("mousedown", () => {
-  isHolding = true;
-});
-
-earnButton.addEventListener("mouseup", () => {
-  isHolding = false;
-});
-
-earnButton.addEventListener("mouseleave", () => {
-  isHolding = false;
-});
-
-earnButton.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  isHolding = true;
-});
-
-earnButton.addEventListener("touchend", () => {
-  isHolding = false;
-});
-
-// Local storage
-function saveGame() {
-  const gameState = {
-    momentum,
-    passiveRate,
-    purchases
-  };
-  localStorage.setItem("momentumGameState", JSON.stringify(gameState));
-}
-
-function loadGame() {
-  const saved = localStorage.getItem("momentumGameState");
-  if (saved) {
-    const state = JSON.parse(saved);
-    momentum = state.momentum || 0;
-    passiveRate = state.passiveRate || 0;
-    Object.assign(purchases, state.purchases);
+  if (isHolding) {
+    momentum += 1 * deltaSeconds;
   }
+
+  momentum += passiveMomentum * deltaSeconds;
+  updateDisplay();
+
+  requestAnimationFrame(gameLoop);
 }
 
-const purchases = {};
-function createChallengeCard(card) {
-  if (!purchases[card.id]) purchases[card.id] = 0;
-  
-  const cardDiv = document.createElement("div");
-  cardDiv.className = "challenge-card";
-  
-  const title = document.createElement("h3");
-  title.textContent = card.title;
-  
-  const description = document.createElement("p");
-  description.textContent = card.description;
-  
-  const costDisplay = document.createElement("p");
-  const currentCost = getCurrentCost(card);
-  costDisplay.textContent = `Cost: ${currentCost.toFixed(2)} MP`;
-  
-  const countDisplay = document.createElement("p");
-  countDisplay.textContent = `Completed: ${purchases[card.id]}x`;
-  
-  const button = document.createElement("button");
-  button.textContent = "I did it!";
-  button.addEventListener("click", () => {
-    const cost = getCurrentCost(card);
-    if (momentum >= cost) {
-      momentum -= cost;
-      passiveRate += card.multiplier;
-      purchases[card.id]++;
-      updateChallengeCards();
+earnButton.addEventListener("mousedown", () => (isHolding = true));
+earnButton.addEventListener("mouseup", () => (isHolding = false));
+earnButton.addEventListener("mouseleave", () => (isHolding = false));
+earnButton.addEventListener("touchstart", () => (isHolding = true));
+earnButton.addEventListener("touchend", () => (isHolding = false));
+
+// Load challenge cards from cards.js
+function renderChallengeCards() {
+  challengeContainer.innerHTML = "";
+  challengeCards.forEach((card) => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "challenge-card";
+    card.dom = cardDiv; // Store reference for updating cooldown
+
+    const title = document.createElement("h3");
+    title.textContent = card.title;
+
+    const description = document.createElement("p");
+    description.textContent = card.description;
+
+    const button = document.createElement("button");
+    button.textContent = "I did it";
+    button.disabled = false;
+
+    const info = document.createElement("p");
+    info.className = "challenge-info";
+    info.textContent = `Owned: ${card.count} | +${card.reward}/sec | Cost: ${formatNumber(card.cost)} MP`;
+
+    const cooldown = document.createElement("p");
+    cooldown.className = "cooldown-timer";
+
+    button.addEventListener("click", () => {
+      if (momentum >= card.cost && !card.cooldownUntil) {
+        momentum -= card.cost;
+        card.count++;
+        card.cost *= 1.15;
+        passiveMomentum += card.reward;
+
+        card.cooldownUntil = Date.now() + 5 * 60 * 1000; // 5 minutes
+        button.disabled = true;
+
+        updateCardUI(card);
+      }
+    });
+
+    cardDiv.appendChild(title);
+    cardDiv.appendChild(description);
+    cardDiv.appendChild(info);
+    cardDiv.appendChild(button);
+    cardDiv.appendChild(cooldown);
+    challengeContainer.appendChild(cardDiv);
+
+    card.button = button;
+    card.info = info;
+    card.cooldownDisplay = cooldown;
+  });
+}
+
+function updateCardUI(card) {
+  card.info.textContent = `Owned: ${card.count} | +${card.reward}/sec | Cost: ${formatNumber(card.cost)} MP`;
+}
+
+function updateCooldowns() {
+  const now = Date.now();
+  challengeCards.forEach((card) => {
+    if (card.cooldownUntil) {
+      const remaining = card.cooldownUntil - now;
+      if (remaining <= 0) {
+        card.cooldownUntil = null;
+        card.button.disabled = false;
+        card.cooldownDisplay.textContent = "";
+      } else {
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        card.cooldownDisplay.textContent = `Cooldown: ${minutes}:${seconds.toString().padStart(2, "0")}`;
+      }
     }
   });
-
-  cardDiv.appendChild(title);
-  cardDiv.appendChild(description);
-  cardDiv.appendChild(costDisplay);
-  cardDiv.appendChild(countDisplay);
-  cardDiv.appendChild(button);
-
-  return cardDiv;
 }
 
-function getCurrentCost(card) {
-  const base = card.baseCost;
-  const count = purchases[card.id] || 0;
-  return base * Math.pow(1.15, count);
-}
+setInterval(updateCooldowns, 1000);
 
-function updateChallengeCards() {
-  challengeContainer.innerHTML = "";
-  challengeCards.forEach(card => {
-    challengeContainer.appendChild(createChallengeCard(card));
-  });
-  updateMomentumDisplay();
-}
-
-loadGame();
-updateChallengeCards();
+renderChallengeCards();
+gameLoop();
