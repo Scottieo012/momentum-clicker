@@ -1,29 +1,34 @@
+// cards.js
+
 const challengeCards = [
   {
-    id: 1,
-    title: "Drink a Glass of Water",
-    description: "Hydrate to start your momentum.",
+    id: "card1",
+    title: "Cold Shower",
+    description: "Take a 30-second cold shower.",
+    cost: 10,
     multiplier: 0.5,
-    baseCost: 10,
     timesCompleted: 0,
-    lastCompletedTime: 0
+    cooldownEnd: 0,
+    tag: "Physical"
   },
   {
-    id: 2,
-    title: "Take a 5-Minute Walk",
-    description: "Refresh your mind and body.",
-    multiplier: 1.0,
-    baseCost: 20,
+    id: "card2",
+    title: "Gratitude Note",
+    description: "Write a short note of appreciation to someone.",
+    cost: 15,
+    multiplier: 0.3,
     timesCompleted: 0,
-    lastCompletedTime: 0
+    cooldownEnd: 0,
+    tag: "Emotional"
   },
   {
-    id: 3,
-    title: "Send a Thank You Message",
-    description: "Practice gratitude by thanking someone.",
-    multiplier: 2.0,
-    baseCost: 40,
+    id: "card3",
+    title: "Digital Detox",
+    description: "Go one hour without looking at a screen.",
+    cost: 20,
+    multiplier: 0.6,
     timesCompleted: 0,
-    lastCompletedTime: 0
+    cooldownEnd: 0,
+    tag: "Mental"
   }
 ];
