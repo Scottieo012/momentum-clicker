@@ -1,132 +1,103 @@
+// game.js
+
 let momentum = 0;
-let passiveMomentumPerSecond = 0;
-let isEarning = false;
-let earnInterval;
-const cooldowns = {};
+let momentumPerSecond = 0;
+let isHolding = false;
+let lastUpdateTime = Date.now();
+
+// Button momentum generation
+function startGeneratingMomentum() {
+  isHolding = true;
+}
+
+function stopGeneratingMomentum() {
+  isHolding = false;
+}
+
+function updateMomentum() {
+  const now = Date.now();
+  const deltaTime = (now - lastUpdateTime) / 1000; // in seconds
+  lastUpdateTime = now;
+
+  if (isHolding) {
+    momentum += 1 * deltaTime; // 1 point per second while holding
+  }
+
+  momentum += momentumPerSecond * deltaTime; // Add passive momentum
+
+  updateMomentumDisplay();
+}
 
 function updateMomentumDisplay() {
-  document.getElementById('momentum').textContent = momentum.toFixed(2);
+  document.getElementById("momentum").textContent = momentum.toFixed(2);
+  document.getElementById("momentumPerSecond").textContent = `+${momentumPerSecond.toFixed(2)} / sec`;
 }
 
-function updateMomentumRateDisplay() {
-  document.getElementById('momentumRate').textContent = passiveMomentumPerSecond.toFixed(2);
-}
+// Render challenge cards
+function renderChallengeCards() {
+  const container = document.getElementById("challengeContainer");
+  container.innerHTML = "";
 
-function startEarning() {
-  if (isEarning) return;
-  isEarning = true;
-  earnInterval = setInterval(() => {
-    momentum += 1;
-    updateMomentumDisplay();
-  }, 1000);
-}
+  challengeCards.forEach(card => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "challenge-card";
 
-function stopEarning() {
-  isEarning = false;
-  clearInterval(earnInterval);
-}
+    const cooldownRemaining = Math.max(0, Math.floor((card.cooldownEnd - Date.now()) / 1000));
+    const isOnCooldown = cooldownRemaining > 0;
 
-function createChallengeCard(card, index) {
-  const container = document.getElementById('challengeContainer');
-  const cardDiv = document.createElement('div');
-  cardDiv.className = 'challenge-card';
-  cardDiv.id = `card-${index}`;
+    cardDiv.innerHTML = `
+      <h3>${card.title}</h3>
+      <p>${card.description}</p>
+      <p>Cost: ${card.cost.toFixed(2)} MP</p>
+      <p>Completed: ${card.timesCompleted}</p>
+      <p>Gain: +${card.multiplier}/sec</p>
+      ${isOnCooldown ? `<p class="cooldown-timer">${cooldownRemaining}s</p>` : ''}
+      <button ${isOnCooldown ? "disabled" : ""} onclick="completeChallenge('${card.id}')">I did it!</button>
+    `;
 
-  const title = document.createElement('h3');
-  title.textContent = card.title;
-
-  const description = document.createElement('p');
-  description.textContent = card.description;
-
-  const cost = document.createElement('p');
-  cost.id = `cost-${index}`;
-  cost.textContent = `Cost: ${card.cost.toFixed(2)} MP`;
-
-  const count = document.createElement('p');
-  count.id = `count-${index}`;
-  count.textContent = `Completed: ${card.completed}`;
-
-  const button = document.createElement('button');
-  button.textContent = "I did it!";
-  button.disabled = false;
-
-  const cooldownTimer = document.createElement('p');
-  cooldownTimer.id = `cooldown-${index}`;
-  cooldownTimer.className = 'cooldown-timer';
-
-  button.addEventListener('click', () => {
-    if (cooldowns[index]) return;
-
-    if (momentum >= card.cost) {
-      momentum -= card.cost;
-      card.completed += 1;
-      passiveMomentumPerSecond += card.reward;
-      card.cost *= 1.1;
-
-      updateMomentumDisplay();
-      updateMomentumRateDisplay();
-      cost.textContent = `Cost: ${card.cost.toFixed(2)} MP`;
-      count.textContent = `Completed: ${card.completed}`;
-
-      // Start 5-minute cooldown
-      button.disabled = true;
-      let remaining = 300; // seconds
-      cooldowns[index] = setInterval(() => {
-        if (remaining > 0) {
-          cooldownTimer.textContent = `Cooldown: ${remaining}s`;
-          remaining--;
-        } else {
-          clearInterval(cooldowns[index]);
-          cooldowns[index] = null;
-          cooldownTimer.textContent = '';
-          button.disabled = false;
-        }
-      }, 1000);
-    }
-  });
-
-  cardDiv.appendChild(title);
-  cardDiv.appendChild(description);
-  cardDiv.appendChild(cost);
-  cardDiv.appendChild(count);
-  cardDiv.appendChild(button);
-  cardDiv.appendChild(cooldownTimer);
-  container.appendChild(cardDiv);
-}
-
-function loadChallengeCards() {
-  challengeCards.forEach((card, index) => {
-    createChallengeCard(card, index);
+    container.appendChild(cardDiv);
   });
 }
 
-function passiveEarningLoop() {
-  setInterval(() => {
-    momentum += passiveMomentumPerSecond;
-    updateMomentumDisplay();
-  }, 1000);
-}
+// Complete challenge
+function completeChallenge(cardId) {
+  const card = challengeCards.find(c => c.id === cardId);
+  if (!card || momentum < card.cost || card.cooldownEnd > Date.now()) return;
 
-window.onload = () => {
+  momentum -= card.cost;
+  momentumPerSecond += card.multiplier;
+  card.timesCompleted += 1;
+
+  // Increase cost slightly
+  card.cost *= 1.15;
+
+  // Set 5-minute cooldown
+  card.cooldownEnd = Date.now() + 5 * 60 * 1000;
+
   updateMomentumDisplay();
-  updateMomentumRateDisplay();
-  loadChallengeCards();
-  passiveEarningLoop();
+  renderChallengeCards();
+}
 
-  const button = document.getElementById('earnButton');
+// Cooldown update timer
+setInterval(() => {
+  renderChallengeCards();
+}, 1000);
 
-  // Desktop mouse events
-  button.addEventListener('mousedown', startEarning);
-  document.addEventListener('mouseup', stopEarning);
+// Game loop
+setInterval(updateMomentum, 100);
 
-  // Mobile touch events
-  button.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevents triggering text selection or zoom
-    startEarning();
-  }, { passive: false });
+// Button event listeners
+const button = document.getElementById("earnButton");
+button.addEventListener("mousedown", startGeneratingMomentum);
+button.addEventListener("mouseup", stopGeneratingMomentum);
+button.addEventListener("mouseleave", stopGeneratingMomentum);
+button.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startGeneratingMomentum();
+}, { passive: false });
+button.addEventListener("touchend", stopGeneratingMomentum);
+button.addEventListener("touchcancel", stopGeneratingMomentum);
 
-  document.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    stopEarning();
-  }, { passive: false });
-};
+// Initial render
+renderChallengeCards();
+updateMomentumDisplay();
