@@ -4,6 +4,8 @@ let isHolding = false;
 let lastUpdate = Date.now();
 let selectedFilter = "All";
 
+let lastMomentumRounded = -1;
+
 const momentumDisplay = document.getElementById("momentum");
 const momentumRateDisplay = document.getElementById("momentumRate");
 const challengeContainer = document.getElementById("challengeContainer");
@@ -14,8 +16,9 @@ function updateMomentumDisplay() {
 }
 
 function updateChallenges() {
-  challengeContainer.innerHTML = "";
   const now = Date.now();
+  challengeContainer.innerHTML = "";
+
   cards.forEach(card => {
     if (selectedFilter !== "All" && card.tag !== selectedFilter) return;
 
@@ -25,16 +28,18 @@ function updateChallenges() {
 
     const title = document.createElement("h3");
     title.textContent = card.title;
+
     const desc = document.createElement("p");
     desc.textContent = card.description;
+
     const costInfo = document.createElement("p");
     costInfo.textContent = `Cost: ${cost.toFixed(2)} MP`;
+
     const count = document.createElement("p");
     count.textContent = `Completed: ${card.timesCompleted}`;
 
     const button = document.createElement("button");
     button.textContent = "I did it";
-    button.disabled = false;
 
     const timeRemaining = (card.cooldownEnd - now) / 1000;
 
@@ -47,9 +52,12 @@ function updateChallenges() {
     } else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
+
       const cd = document.createElement("p");
       cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
       cardDiv.appendChild(cd);
+    } else {
+      button.disabled = false;
     }
 
     button.onclick = () => {
@@ -57,9 +65,10 @@ function updateChallenges() {
         momentum -= cost;
         momentumPerSecond += card.multiplier;
         card.timesCompleted++;
-        card.cooldownEnd = now + 5 * 60 * 1000;
-        updateChallenges();
+        card.cooldownEnd = Date.now() + 5 * 60 * 1000;
+
         updateMomentumDisplay();
+        updateChallenges(); // update only once after purchase
       }
     };
 
@@ -76,13 +85,22 @@ function loop() {
   const now = Date.now();
   const delta = (now - lastUpdate) / 1000;
   lastUpdate = now;
+
   if (isHolding) momentum += delta;
   momentum += momentumPerSecond * delta;
+
   updateMomentumDisplay();
-  updateChallenges();
+
+  const roundedMomentum = Math.floor(momentum);
+  if (roundedMomentum !== lastMomentumRounded) {
+    lastMomentumRounded = roundedMomentum;
+    updateChallenges(); // only refresh when MP crosses a new integer
+  }
+
   requestAnimationFrame(loop);
 }
 
+// Button events
 document.getElementById("earnButton").addEventListener("pointerdown", () => {
   isHolding = true;
 });
@@ -93,6 +111,7 @@ document.getElementById("earnButton").addEventListener("pointerleave", () => {
   isHolding = false;
 });
 
+// Filter buttons
 document.querySelectorAll("#filter-buttons button").forEach(button => {
   button.addEventListener("click", () => {
     selectedFilter = button.getAttribute("data-filter");
@@ -100,6 +119,7 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
   });
 });
 
+// Init
 updateMomentumDisplay();
 updateChallenges();
 loop();
