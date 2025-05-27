@@ -10,16 +10,24 @@
   <h1>Welcome to Momentum!</h1>
   <p class="subtitle">An incremental transformation platform</p>
 
-  <div class="momentum-counter">Momentum Points: <span id="momentum">0.00</span></div>
-  <div class="momentum-rate">(+<span id="momentumRate">0.00</span>/sec)</div>
+  <div class="momentum-counter">
+    Momentum Points: <span id="momentum">0.00</span><br />
+    <span id="momentumRate" class="subdued">Momentum/sec: 0.00</span>
+  </div>
 
   <div class="button-container">
-    <button id="earnButton" class="earn-button" ontouchstart="startHold()" ontouchend="stopHold()"></button>
+    <button id="earnButton" class="earn-button"></button>
   </div>
 
-  <div class="challenge-container" id="challengeContainer">
-    <!-- Challenge cards will be dynamically inserted here -->
+  <div id="filter-buttons" class="filter-buttons">
+    <button data-filter="All">All</button>
+    <button data-filter="Physical">Physical</button>
+    <button data-filter="Mental">Mental</button>
+    <button data-filter="Organizational Management">Organizational Management</button>
+    <button data-filter="Help Others">Help Others</button>
   </div>
+
+  <div class="challenge-container" id="challengeContainer"></div>
 
   <script src="cards.js"></script>
   <script src="game.js"></script>
