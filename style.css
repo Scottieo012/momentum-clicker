@@ -82,9 +82,21 @@ h1 {
 }
 
 .blacked-out {
+  position: relative;
+  overflow: hidden;
+  color: transparent !important;
   background-color: #000 !important;
-  color: #fff !important;
-  opacity: 0.5;
+}
+
+.blacked-out::after {
+  content: "Requires more Momentum...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.9em;
+  text-align: center;
   pointer-events: none;
 }
 
