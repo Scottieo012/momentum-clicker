@@ -1,3 +1,4 @@
+
 let momentum = 0;
 let momentumPerSecond = 0;
 let isHolding = false;
@@ -15,16 +16,15 @@ function updateMomentumDisplay() {
   momentumRateDisplay.textContent = `Momentum/sec: ${momentumPerSecond.toFixed(2)}`;
 }
 
-function updateChallenges() {
-  const now = Date.now();
+function renderAllCardsOnce() {
   challengeContainer.innerHTML = "";
 
   cards.forEach(card => {
     if (selectedFilter !== "All" && card.tag !== selectedFilter) return;
 
-    const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
     const cardDiv = document.createElement("div");
     cardDiv.className = "challenge-card";
+    cardDiv.setAttribute("data-card-id", card.id);
 
     const title = document.createElement("h3");
     title.textContent = card.title;
@@ -33,15 +33,59 @@ function updateChallenges() {
     desc.textContent = card.description;
 
     const costInfo = document.createElement("p");
-    costInfo.textContent = `Cost: ${cost.toFixed(2)} MP`;
+    costInfo.className = "cost-info";
 
     const count = document.createElement("p");
-    count.textContent = `Completed: ${card.timesCompleted}`;
+    count.className = "completion-count";
 
     const button = document.createElement("button");
     button.textContent = "I did it";
+    button.className = "action-button";
+
+    button.addEventListener("click", () => {
+      const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
+      const now = Date.now();
+      if (momentum >= cost && now >= card.cooldownEnd) {
+        momentum -= cost;
+        momentumPerSecond += card.multiplier;
+        card.timesCompleted++;
+        card.cooldownEnd = now + 5 * 60 * 1000;
+        updateMomentumDisplay();
+        refreshCardStates();
+      }
+    });
+
+    cardDiv.appendChild(title);
+    cardDiv.appendChild(desc);
+    cardDiv.appendChild(costInfo);
+    cardDiv.appendChild(count);
+    cardDiv.appendChild(button);
+    challengeContainer.appendChild(cardDiv);
+  });
+}
+
+function refreshCardStates() {
+  const now = Date.now();
+
+  cards.forEach(card => {
+    const cardDiv = document.querySelector(`.challenge-card[data-card-id='${card.id}']`);
+    if (!cardDiv) return;
+
+    const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
+    const costInfo = cardDiv.querySelector(".cost-info");
+    const count = cardDiv.querySelector(".completion-count");
+    const button = cardDiv.querySelector(".action-button");
+
+    cardDiv.classList.remove("blacked-out", "grayed-out");
+    button.disabled = false;
+
+    costInfo.textContent = `Cost: ${cost.toFixed(2)} MP`;
+    count.textContent = `Completed: ${card.timesCompleted}`;
 
     const timeRemaining = (card.cooldownEnd - now) / 1000;
+
+    const cooldownText = cardDiv.querySelector(".cooldown-timer");
+    if (cooldownText) cooldownText.remove();
 
     if (momentum < cost * 0.5) {
       cardDiv.classList.add("blacked-out");
@@ -52,32 +96,11 @@ function updateChallenges() {
     } else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
-
       const cd = document.createElement("p");
+      cd.className = "cooldown-timer";
       cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
       cardDiv.appendChild(cd);
-    } else {
-      button.disabled = false;
     }
-
-    button.onclick = () => {
-      if (momentum >= cost && now >= card.cooldownEnd) {
-        momentum -= cost;
-        momentumPerSecond += card.multiplier;
-        card.timesCompleted++;
-        card.cooldownEnd = Date.now() + 5 * 60 * 1000;
-
-        updateMomentumDisplay();
-        updateChallenges(); // update only once after purchase
-      }
-    };
-
-    cardDiv.appendChild(title);
-    cardDiv.appendChild(desc);
-    cardDiv.appendChild(costInfo);
-    cardDiv.appendChild(count);
-    cardDiv.appendChild(button);
-    challengeContainer.appendChild(cardDiv);
   });
 }
 
@@ -94,7 +117,7 @@ function loop() {
   const roundedMomentum = Math.floor(momentum);
   if (roundedMomentum !== lastMomentumRounded) {
     lastMomentumRounded = roundedMomentum;
-    updateChallenges(); // only refresh when MP crosses a new integer
+    refreshCardStates();
   }
 
   requestAnimationFrame(loop);
@@ -115,11 +138,13 @@ document.getElementById("earnButton").addEventListener("pointerleave", () => {
 document.querySelectorAll("#filter-buttons button").forEach(button => {
   button.addEventListener("click", () => {
     selectedFilter = button.getAttribute("data-filter");
-    updateChallenges();
+    renderAllCardsOnce();
+    refreshCardStates();
   });
 });
 
 // Init
 updateMomentumDisplay();
-updateChallenges();
+renderAllCardsOnce();
+refreshCardStates();
 loop();
