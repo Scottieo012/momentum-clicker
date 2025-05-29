@@ -16,25 +16,55 @@ function updateMomentumDisplay() {
   momentumRateDisplay.textContent = `Momentum/sec: ${momentumPerSecond.toFixed(2)}`;
 }
 
+function saveGame() {
+  const saveData = {
+    momentum,
+    momentumPerSecond,
+    cards: cards.map(card => ({
+      id: card.id,
+      timesCompleted: card.timesCompleted,
+      cooldownEnd: card.cooldownEnd
+    }))
+  };
+  localStorage.setItem("momentumGameSave", JSON.stringify(saveData));
+}
+
+function loadGame() {
+  const saved = localStorage.getItem("momentumGameSave");
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      momentum = data.momentum || 0;
+      momentumPerSecond = data.momentumPerSecond || 0;
+      if (data.cards && Array.isArray(data.cards)) {
+        data.cards.forEach(savedCard => {
+          const card = cards.find(c => c.id === savedCard.id);
+          if (card) {
+            card.timesCompleted = savedCard.timesCompleted || 0;
+            card.cooldownEnd = savedCard.cooldownEnd || 0;
+          }
+        });
+      }
+    } catch (e) {
+      console.error("Failed to load save data:", e);
+    }
+  }
+}
+
 function renderAllCardsOnce() {
   challengeContainer.innerHTML = "";
-
   cards.forEach(card => {
     if (selectedFilter !== "All" && card.tag !== selectedFilter) return;
-
     const cardDiv = document.createElement("div");
     cardDiv.className = "challenge-card";
     cardDiv.setAttribute("data-card-id", card.id);
 
     const title = document.createElement("h3");
     title.textContent = card.title;
-
     const desc = document.createElement("p");
     desc.textContent = card.description;
-
     const costInfo = document.createElement("p");
     costInfo.className = "cost-info";
-
     const count = document.createElement("p");
     count.className = "completion-count";
 
@@ -52,6 +82,7 @@ function renderAllCardsOnce() {
         card.cooldownEnd = now + 5 * 60 * 1000;
         updateMomentumDisplay();
         refreshCardStates();
+        saveGame();
       }
     });
 
@@ -66,7 +97,6 @@ function renderAllCardsOnce() {
 
 function refreshCardStates() {
   const now = Date.now();
-
   cards.forEach(card => {
     const cardDiv = document.querySelector(`.challenge-card[data-card-id='${card.id}']`);
     if (!cardDiv) return;
@@ -83,7 +113,6 @@ function refreshCardStates() {
     count.textContent = `Completed: ${card.timesCompleted}`;
 
     const timeRemaining = (card.cooldownEnd - now) / 1000;
-
     const cooldownText = cardDiv.querySelector(".cooldown-timer");
     if (cooldownText) cooldownText.remove();
 
@@ -118,6 +147,7 @@ function loop() {
   if (roundedMomentum !== lastMomentumRounded) {
     lastMomentumRounded = roundedMomentum;
     refreshCardStates();
+    saveGame();
   }
 
   requestAnimationFrame(loop);
@@ -144,6 +174,7 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
 });
 
 // Init
+loadGame();
 updateMomentumDisplay();
 renderAllCardsOnce();
 refreshCardStates();
