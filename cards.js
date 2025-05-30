@@ -59,4 +59,104 @@ const cards = [
     timesCompleted: 0,
     cooldownEnd: 0
   }
+    {
+    id: "walk-5",
+    title: "Take a 5-Minute Walk",
+    description: "Go for a five-minute walk outside or around your space.",
+    tag: "Physical",
+    baseCost: 10,
+    multiplier: 1,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "stretch-3",
+    title: "Stretch It Out",
+    description: "Do a 3-minute full-body stretch routine.",
+    tag: "Physical",
+    baseCost: 12,
+    multiplier: 1.2,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "hydrate",
+    title: "Hydrate With Intention",
+    description: "Drink a full glass of water mindfully.",
+    tag: "Physical",
+    baseCost: 10,
+    multiplier: 1,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "smile",
+    title: "Smile On Purpose",
+    description: "Smile in the mirror for 30 seconds. Let yourself feel it.",
+    tag: "Mental",
+    baseCost: 10,
+    multiplier: 1,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "thank-you-note",
+    title: "Gratitude Message",
+    description: "Send a short thank-you message to someone.",
+    tag: "Help Others",
+    baseCost: 15,
+    multiplier: 1.5,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "power-pose",
+    title: "Power Pose",
+    description: "Hold a power pose for one minute. Stand tall and own your space.",
+    tag: "Mental",
+    baseCost: 20,
+    multiplier: 2,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "clear-clutter",
+    title: "Clear the Clutter",
+    description: "Put away or throw out 3 things in your immediate environment.",
+    tag: "Organizational Management",
+    baseCost: 12,
+    multiplier: 1.2,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "laugh",
+    title: "Laugh on Demand",
+    description: "Watch or recall something that makes you laugh.",
+    tag: "Mental",
+    baseCost: 10,
+    multiplier: 1,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "present-moment",
+    title: "3-Point Presence Check",
+    description: "Pause and notice 3 things you can see, hear, and feel right now.",
+    tag: "Mental",
+    baseCost: 15,
+    multiplier: 1.5,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  },
+  {
+    id: "future-self-note",
+    title: "Message to Future You",
+    description: "Write a 1-sentence note to your future self.",
+    tag: "Mental",
+    baseCost: 18,
+    multiplier: 1.8,
+    timesCompleted: 0,
+    cooldownEnd: 0
+  }
 ];
