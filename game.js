@@ -190,6 +190,11 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
   });
 });
 
+document.getElementById("refreshCardsButton").addEventListener("click", () => {
+  renderAllCardsOnce();
+  refreshCardStates();
+});
+
 // Init
 loadGame();
 updateMomentumDisplay();
