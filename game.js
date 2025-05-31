@@ -51,10 +51,26 @@ function loadGame() {
   }
 }
 
+function getRandomCardsByFilter(filter, count = 3) {
+  const filtered = filter === "All" ? cards : cards.filter(c => c.tag === filter);
+  const available = filtered.filter(c => !c.hidden);
+  const result = [];
+
+  while (result.length < count && available.length > 0) {
+    const idx = Math.floor(Math.random() * available.length);
+    result.push(available.splice(idx, 1)[0]);
+  }
+
+  return result;
+}
+
+let visibleCards = [];
+
 function renderAllCardsOnce() {
   challengeContainer.innerHTML = "";
-  cards.forEach(card => {
-    if (selectedFilter !== "All" && card.tag !== selectedFilter) return;
+  visibleCards = getRandomCardsByFilter(selectedFilter, 3);
+
+  visibleCards.forEach(card => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "challenge-card";
     cardDiv.setAttribute("data-card-id", card.id);
@@ -97,7 +113,7 @@ function renderAllCardsOnce() {
 
 function refreshCardStates() {
   const now = Date.now();
-  cards.forEach(card => {
+  visibleCards.forEach(card => {
     const cardDiv = document.querySelector(`.challenge-card[data-card-id='${card.id}']`);
     if (!cardDiv) return;
 
@@ -132,6 +148,7 @@ function refreshCardStates() {
     }
   });
 }
+
 
 function loop() {
   const now = Date.now();
