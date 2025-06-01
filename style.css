@@ -52,7 +52,7 @@ h1 {
 
 /* Brighter and more active state when holding */
 .earn-button.holding {
-  background: radial-gradient(circle, #f1faee, #1d3557);
+  background: radial-gradient(circle, #f1faee, #8cfffb);
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
   animation: activePulse 1.5s infinite ease-in-out;
 }
