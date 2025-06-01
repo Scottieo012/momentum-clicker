@@ -171,15 +171,35 @@ function loop() {
 }
 
 // Button events
-document.getElementById("earnButton").addEventListener("pointerdown", () => {
+const earnButton = document.getElementById("earnButton");
+
+earnButton.addEventListener("mousedown", () => {
   isHolding = true;
+  earnButton.classList.add("holding");
 });
-document.getElementById("earnButton").addEventListener("pointerup", () => {
+
+earnButton.addEventListener("mouseup", () => {
   isHolding = false;
+  earnButton.classList.remove("holding");
 });
-document.getElementById("earnButton").addEventListener("pointerleave", () => {
+
+earnButton.addEventListener("mouseleave", () => {
   isHolding = false;
+  earnButton.classList.remove("holding");
 });
+
+// Mobile touch support
+earnButton.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  isHolding = true;
+  earnButton.classList.add("holding");
+});
+
+earnButton.addEventListener("touchend", () => {
+  isHolding = false;
+  earnButton.classList.remove("holding");
+});
+
 
 // Filter buttons
 document.querySelectorAll("#filter-buttons button").forEach(button => {
