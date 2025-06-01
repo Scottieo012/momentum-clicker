@@ -29,23 +29,46 @@ h1 {
   margin: 20px;
 }
 
+/* Base momentum button */
 .earn-button {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: #3498db;
+  background: radial-gradient(circle, #a8dadc, #457b9d);
   border: none;
-  color: white;
-  font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 0 20px rgba(173, 216, 230, 0.3);
+  animation: calmPulse 3s infinite ease-in-out;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
   -webkit-user-select: none; /* iOS Safari */
   -webkit-touch-callout: none; /* Disable tap-and-hold context menu on iOS */
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
   -webkit-tap-highlight-color: transparent; /* Remove gray flash on tap */
   touch-action: manipulation; /* Prevent double tap zoom & pan */
+}
+
+/* Brighter and more active state when holding */
+.earn-button.holding {
+  background: radial-gradient(circle, #f1faee, #1d3557);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+  animation: activePulse 1.5s infinite ease-in-out;
+}
+
+/* Calm pulse effect */
+@keyframes calmPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Active pulse effect */
+@keyframes activePulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .challenge-container {
