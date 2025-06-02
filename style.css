@@ -70,7 +70,7 @@ h1 {
   width: 140%;
   height: 140%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(173, 216, 230, 0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(173, 216, 230, 0.9), transparent 50%);
   animation: auraPulse 4s infinite ease-in-out;
   z-index: 0;
   pointer-events: none;
