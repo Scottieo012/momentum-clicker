@@ -27,6 +27,7 @@ h1 {
 
 .button-container {
   margin: 20px;
+  overflow: visible;
 }
 
 /* Base momentum button */
