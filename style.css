@@ -63,6 +63,7 @@ h1 {
 
 /* AURA layer */
 .earn-button::before {
+  border: 2px solid red;
   content: "";
   position: absolute;
   top: -20%;
