@@ -65,20 +65,21 @@ h1 {
   border: 2px solid red;
   content: "";
   position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(173, 216, 230, 0.9), transparent 50%);
+  background: radial-gradient(circle, rgba(173, 216, 230, 0.6), rgba(173, 216, 230, 0.1));
   animation: auraPulse 4s infinite ease-in-out;
   z-index: 0;
   pointer-events: none;
   transition: all 0.3s ease;
 }
 
+/* AURA layer (while holding) */
 .earn-button.holding::before {
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 60%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
   animation: auraActivePulse 2s infinite ease-in-out;
 }
 
