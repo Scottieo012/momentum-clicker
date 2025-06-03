@@ -34,7 +34,6 @@ h1 {
 .earn-button {
   position: relative;
   z-index: 1;
-  overflow: hidden;
   width: 120px;
   height: 120px;
   border-radius: 50%;
