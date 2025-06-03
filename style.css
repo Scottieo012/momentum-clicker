@@ -79,7 +79,7 @@ h1 {
 
 /* AURA layer (while holding) */
 .earn-button.holding::before {
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.8), rgba(0, 255, 255, 0.1));
   animation: auraActivePulse 2s infinite ease-in-out;
 }
 
