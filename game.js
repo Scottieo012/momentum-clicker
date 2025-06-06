@@ -127,6 +127,7 @@ function renderAllCardsOnce() {
         card.timesCompleted++;
         card.cooldownEnd = now + 5 * 60 * 1000;
         updateMomentumDisplay();
+        updateShardCount();
         refreshCardStates();
         saveGame();
       }
