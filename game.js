@@ -22,15 +22,19 @@ function addShards(count) {
 }
 
 function updateShardCount() {
+  const saved = localStorage.getItem("momentumGameSave");
   let completedCount = 0;
 
-  // Loop through all challenge card states in localStorage
-  for (const key in localStorage) {
-    if (key.startsWith("challenge_")) {
-      const data = JSON.parse(localStorage.getItem(key));
-      if (data && data.timesCompleted && data.timesCompleted > 0) {
-        completedCount += data.timesCompleted;
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.cards && Array.isArray(data.cards)) {
+        data.cards.forEach(card => {
+          completedCount += card.timesCompleted || 0;
+        });
       }
+    } catch (e) {
+      console.error("Error reading shard count from save:", e);
     }
   }
 
