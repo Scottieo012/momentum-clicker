@@ -21,6 +21,22 @@ function addShards(count) {
   }
 }
 
+function updateShardCount() {
+  let completedCount = 0;
+
+  // Loop through all challenge card states in localStorage
+  for (const key in localStorage) {
+    if (key.startsWith("challenge_")) {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data && data.timesCompleted && data.timesCompleted > 0) {
+        completedCount += data.timesCompleted;
+      }
+    }
+  }
+
+  addShards(completedCount);
+}
+
 const momentumDisplay = document.getElementById("momentum");
 const momentumRateDisplay = document.getElementById("momentumRate");
 const challengeContainer = document.getElementById("challengeContainer");
