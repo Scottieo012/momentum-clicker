@@ -7,6 +7,20 @@ let selectedFilter = "All";
 
 let lastMomentumRounded = -1;
 
+function addShards(count) {
+  const svg = document.querySelector(".momentum-overlay");
+  svg.innerHTML = ""; // Clear any previous shards
+
+  for (let i = 0; i < count; i++) {
+    const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    shard.setAttribute("cx", "100");
+    shard.setAttribute("cy", "100");
+    shard.setAttribute("r", "6");
+    shard.classList.add("shard");
+    svg.appendChild(shard);
+  }
+}
+
 const momentumDisplay = document.getElementById("momentum");
 const momentumRateDisplay = document.getElementById("momentumRate");
 const challengeContainer = document.getElementById("challengeContainer");
@@ -213,6 +227,10 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
 document.getElementById("refreshCardsButton").addEventListener("click", () => {
   renderAllCardsOnce();
   refreshCardStates();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  addShards(3); // Simulate 3 completed challenges for now
 });
 
 // Init
