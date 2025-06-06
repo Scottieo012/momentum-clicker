@@ -230,7 +230,7 @@ document.getElementById("refreshCardsButton").addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  addShards(3); // Simulate 3 completed challenges for now
+  updateShardCount();
 });
 
 // Init
