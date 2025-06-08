@@ -4,6 +4,7 @@ let momentumPerSecond = 0;
 let isHolding = false;
 let lastUpdate = Date.now();
 let selectedFilter = "All";
+let lastSaveTime = 0;
 
 let lastMomentumRounded = -1;
 
@@ -216,8 +217,14 @@ function loop() {
   if (roundedMomentum !== lastMomentumRounded) {
     lastMomentumRounded = roundedMomentum;
     refreshCardStates();
-    saveGame();
+  
+    const now = Date.now();
+    if (now - lastSaveTime > 3000) { // only save every 3 seconds
+      saveGame();
+      lastSaveTime = now;
+    }
   }
+
 
   requestAnimationFrame(loop);
 }
