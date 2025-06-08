@@ -97,6 +97,7 @@ function confirmResetGame() {
 }
 
 function resetGame() {
+  console.log("RESETTING GAME...");
   localStorage.clear();
   location.reload();
 }
