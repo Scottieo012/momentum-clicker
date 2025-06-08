@@ -89,6 +89,18 @@ function loadGame() {
   }
 }
 
+function confirmResetGame() {
+  const confirmReset = confirm("Are you sure you want to reset all progress? This cannot be undone.");
+  if (confirmReset) {
+    resetGame();
+  }
+}
+
+function resetGame() {
+  localStorage.clear();
+  location.reload();
+}
+
 function getRandomCardsByFilter(filter, count = 3) {
   const filtered = filter === "All" ? cards : cards.filter(c => c.tag === filter);
   const available = filtered.filter(c => !c.hidden);
