@@ -9,7 +9,7 @@ let lastMomentumRounded = -1;
 
 function addShards(count) {
   const svg = document.querySelector(".momentum-overlay");
-  svg.innerHTML = ""; // Clear any previous shards
+  svg.innerHTML = ""; // Clear previous shards
 
   for (let i = 0; i < count; i++) {
     const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -17,6 +17,10 @@ function addShards(count) {
     shard.setAttribute("cy", "100");
     shard.setAttribute("r", "6");
     shard.classList.add("shard");
+
+    // Add unique animation delay via style attribute
+    shard.style.animationDelay = `${(i * 360 / count) / 60}s`; // evenly spread
+
     svg.appendChild(shard);
   }
 }
