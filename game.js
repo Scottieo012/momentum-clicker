@@ -137,7 +137,7 @@ function renderAllCardsOnce() {
     count.className = "completion-count";
 
     const button = document.createElement("button");
-    button.textContent = "I did it";
+    button.textContent = "Did it";
     button.className = "action-button";
 
     button.addEventListener("click", () => {
@@ -157,9 +157,14 @@ function renderAllCardsOnce() {
 
     cardDiv.appendChild(title);
     cardDiv.appendChild(desc);
-    cardDiv.appendChild(costInfo);
-    cardDiv.appendChild(count);
-    cardDiv.appendChild(button);
+    const footer = document.createElement("div");
+    footer.className = "card-footer";
+    footer.appendChild(costInfo);
+    footer.appendChild(button);
+    footer.appendChild(count);
+    
+    cardDiv.appendChild(footer);
+
     challengeContainer.appendChild(cardDiv);
   });
 }
