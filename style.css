@@ -200,3 +200,22 @@ h1 {
   50% { transform: scale(1.2); opacity: 0.5; }
   100% { transform: scale(1); opacity: 0.8; }
 }
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.card-footer p,
+.card-footer button {
+  margin: 0;
+  font-size: 0.85em;
+}
+
+.card-footer button {
+  flex-shrink: 0;
+}
