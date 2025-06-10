@@ -52,7 +52,7 @@ const challengeContainer = document.getElementById("challengeContainer");
 
 function updateMomentumDisplay() {
   momentumDisplay.textContent = momentum.toFixed(2);
-  momentumRateDisplay.textContent = `Momentum/sec: ${momentumPerSecond.toFixed(2)}`;
+  momentumRateDisplay.textContent = `per second: ${momentumPerSecond.toFixed(2)}`;
 }
 
 function saveGame() {
