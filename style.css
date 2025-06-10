@@ -165,7 +165,7 @@ h1 {
 }
 
 .shard {
-  fill: rgba(255, 255, 255, 0.6);
+  fill: rgba(200, 200, 200, 0.6);
   animation: orbit 6s linear infinite;
   transform-origin: 50% 50%;
   pointer-events: none;
