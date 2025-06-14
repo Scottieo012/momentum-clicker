@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<div class="main-content">
   <h1>Momentum</h1>
   <p class="subtitle">A little transformation game with big dreams</p>
 
@@ -15,14 +17,14 @@
     <span id="momentumRate" class="subdued">per second: 0.00</span>
   </div>
 
-<div class="button-container">
-  <div class="momentum-wrapper">
-    <svg class="momentum-overlay" viewBox="0 0 200 200">
-      <!-- Shards will appear here -->
-    </svg>
-    <button id="earnButton" class="earn-button"></button>
+  <div class="button-container">
+    <div class="momentum-wrapper">
+      <svg class="momentum-overlay" viewBox="0 0 200 200">
+        <!-- Shards will appear here -->
+      </svg>
+      <button id="earnButton" class="earn-button"></button>
+    </div>
   </div>
-</div>
 
   <div id="filter-buttons" class="filter-buttons">
     <button data-filter="All"><b>All</b></button>
@@ -32,20 +34,22 @@
     <button data-filter="Help Others">Help Others</button>
   </div>
 
-<div id="cardRefreshContainer">
-  <button id="refreshCardsButton"><i>Show New Cards</i></button>
+  <div id="cardRefreshContainer">
+    <button id="refreshCardsButton"><i>Show New Cards</i></button>
+  </div>
+
+  <div class="challenge-container" id="challengeContainer">
+    <!-- Challenge cards appear here -->
+  </div>
 </div>
 
-<div class="challenge-container" id="challengeContainer">
-  <!-- Challenge cards appear here -->
-</div>
-  
-  <script src="cards.js"></script>
-  <script src="game.js"></script>
-
+<!-- Reset Button -->
 <button onclick="confirmResetGame()" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
   🔄 Reset Game
 </button>
-  
+
+<script src="cards.js"></script>
+<script src="game.js"></script>
+
 </body>
 </html>
