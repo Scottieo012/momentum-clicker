@@ -29,7 +29,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 220px; /* or adjust as needed */
+  height: 200px; /* or adjust as needed */
   margin-top: 20px;
   position: relative;
 }
