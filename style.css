@@ -169,8 +169,8 @@ h1 {
   position: absolute;
   top: -40px;
   left: 0;
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
   pointer-events: none;
   z-index: 0;
 }
