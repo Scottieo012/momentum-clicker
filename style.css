@@ -183,8 +183,8 @@ h1 {
 }
 
 @keyframes orbit {
-  0%   { transform: rotate(0deg) translate(70px) rotate(0deg); }
-  100% { transform: rotate(360deg) translate(70px) rotate(-360deg); }
+  0%   { transform: rotate(0deg) translate(90px) rotate(0deg); }
+  100% { transform: rotate(360deg) translate(90px) rotate(-360deg); }
 }
 
 /* Calm pulse effect */
