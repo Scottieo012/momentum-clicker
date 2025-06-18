@@ -27,24 +27,16 @@ function addShards(count) {
 }
 
 function updateShardCount() {
-  const saved = localStorage.getItem("momentumGameSave");
   let completedCount = 0;
 
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      if (data.cards && Array.isArray(data.cards)) {
-        data.cards.forEach(card => {
-          completedCount += card.timesCompleted || 0;
-        });
-      }
-    } catch (e) {
-      console.error("Error reading shard count from save:", e);
-    }
-  }
+  // Use in-memory card data instead of localStorage
+  cards.forEach(card => {
+    completedCount += card.timesCompleted || 0;
+  });
 
   addShards(completedCount);
 }
+
 
 const momentumDisplay = document.getElementById("momentum");
 const momentumRateDisplay = document.getElementById("momentumRate");
