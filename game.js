@@ -38,9 +38,9 @@ function updateShardCount() {
 }
 
 
-const momentumDisplay = document.getElementById("momentum");
-const momentumRateDisplay = document.getElementById("momentumRate");
-const challengeContainer = document.getElementById("challengeContainer");
+let momentumDisplay;
+let momentumRateDisplay;
+let challengeContainer;
 
 function updateMomentumDisplay() {
   momentumDisplay.textContent = momentum.toFixed(2);
@@ -263,6 +263,9 @@ document.getElementById("refreshCardsButton").addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  momentumDisplay = document.getElementById("momentum");
+  momentumRateDisplay = document.getElementById("momentumRate");
+  challengeContainer = document.getElementById("challengeContainer");
 
   const earnButton = document.getElementById("earnButton");
 
