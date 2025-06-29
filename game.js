@@ -255,12 +255,6 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
     selectedFilter = button.getAttribute("data-filter");
     renderAllCardsOnce();
     refreshCardStates();
-if (momentum >= cost && now >= card.cooldownEnd) {
-      if (teaser && desc) {
-        teaser.style.display = "none";
-        desc.style.display = "block";
-      }
-    }
     });
 });
 
