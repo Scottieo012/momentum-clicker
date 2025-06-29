@@ -153,7 +153,7 @@ teaser.style.display = "none";  // Hidden by default
   updateMomentumDisplay();
   renderAllCardsOnce();
   refreshCardStates();
-  loop(); // Moved here to ensure button + listeners are active
+
 
         refreshCardStates();
         saveGame();
