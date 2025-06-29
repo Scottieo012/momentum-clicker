@@ -122,7 +122,13 @@ function renderAllCardsOnce() {
     const title = document.createElement("h3");
     title.textContent = card.title;
     const desc = document.createElement("p");
-    desc.textContent = card.description;
+    
+desc.textContent = card.description;
+const teaser = document.createElement("p");
+teaser.className = "teaser-text";
+teaser.textContent = card.teaser || "";
+teaser.style.display = "none";  // Hidden by default
+
     const costInfo = document.createElement("p");
     costInfo.className = "cost-info";
     const count = document.createElement("p");
@@ -170,6 +176,8 @@ function refreshCardStates() {
     const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
     const costInfo = cardDiv.querySelector(".cost-info");
     const count = cardDiv.querySelector(".completion-count");
+    const desc = cardDiv.querySelector("p:not(.cost-info):not(.completion-count):not(.cooldown-timer):not(.teaser-text)");
+    const teaser = cardDiv.querySelector(".teaser-text");
     const button = cardDiv.querySelector(".action-button");
 
     cardDiv.classList.remove("blacked-out", "grayed-out");
@@ -185,6 +193,10 @@ function refreshCardStates() {
     if (momentum < cost * 0.5) {
       cardDiv.classList.add("blacked-out");
       button.disabled = true;
+      if (teaser && desc) {
+        teaser.style.display = "block";
+        desc.style.display = "none";
+      }
     } else if (momentum < cost) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
@@ -263,7 +275,13 @@ document.querySelectorAll("#filter-buttons button").forEach(button => {
     selectedFilter = button.getAttribute("data-filter");
     renderAllCardsOnce();
     refreshCardStates();
-  });
+if (momentum >= cost && now >= card.cooldownEnd) {
+      if (teaser && desc) {
+        teaser.style.display = "none";
+        desc.style.display = "block";
+      }
+    }
+    });
 });
 
 document.getElementById("refreshCardsButton").addEventListener("click", () => {
