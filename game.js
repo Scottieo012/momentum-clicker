@@ -245,8 +245,7 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// Button events
-});
+
 
 
 // Filter buttons
