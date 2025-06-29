@@ -147,7 +147,14 @@ teaser.style.display = "none";  // Hidden by default
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
         updateMomentumDisplay();
-        updateShardCount();
+      
+  updateShardCount();
+  loadGame();
+  updateMomentumDisplay();
+  renderAllCardsOnce();
+  refreshCardStates();
+  loop(); // Moved here to ensure button + listeners are active
+
         refreshCardStates();
         saveGame();
       }
@@ -292,12 +299,13 @@ document.addEventListener("DOMContentLoaded", () => {
     earnButton.classList.remove("holding");
   });
 
+
   updateShardCount();
+  loadGame();
+  updateMomentumDisplay();
+  renderAllCardsOnce();
+  refreshCardStates();
+  loop(); // Moved here to ensure button + listeners are active
+
 });
 
-// Init
-loadGame();
-updateMomentumDisplay();
-renderAllCardsOnce();
-refreshCardStates();
-loop();
