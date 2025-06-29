@@ -239,33 +239,6 @@ function loop() {
 }
 
 // Button events
-const earnButton = document.getElementById("earnButton");
-
-earnButton.addEventListener("mousedown", () => {
-  isHolding = true;
-  earnButton.classList.add("holding");
-});
-
-earnButton.addEventListener("mouseup", () => {
-  isHolding = false;
-  earnButton.classList.remove("holding");
-});
-
-earnButton.addEventListener("mouseleave", () => {
-  isHolding = false;
-  earnButton.classList.remove("holding");
-});
-
-// Mobile touch support
-earnButton.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  isHolding = true;
-  earnButton.classList.add("holding");
-});
-
-earnButton.addEventListener("touchend", () => {
-  isHolding = false;
-  earnButton.classList.remove("holding");
 });
 
 
@@ -290,6 +263,35 @@ document.getElementById("refreshCardsButton").addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  const earnButton = document.getElementById("earnButton");
+
+  earnButton.addEventListener("mousedown", () => {
+    isHolding = true;
+    earnButton.classList.add("holding");
+  });
+
+  earnButton.addEventListener("mouseup", () => {
+    isHolding = false;
+    earnButton.classList.remove("holding");
+  });
+
+  earnButton.addEventListener("mouseleave", () => {
+    isHolding = false;
+    earnButton.classList.remove("holding");
+  });
+
+  earnButton.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    isHolding = true;
+    earnButton.classList.add("holding");
+  });
+
+  earnButton.addEventListener("touchend", () => {
+    isHolding = false;
+    earnButton.classList.remove("holding");
+  });
+
   updateShardCount();
 });
 
