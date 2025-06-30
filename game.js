@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateShardCount();
   loadGame();
   updateMomentumDisplay();
-  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
+  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding);
   renderAllCardsOnce();
   refreshCardStates();
   loop(); // Moved here to ensure button + listeners are active
