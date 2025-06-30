@@ -43,12 +43,14 @@ let momentumRateDisplay;
 let challengeContainer;
 
 function updateMomentumDisplay() {
-  momentumDisplay.textContent = momentum.toFixed(2);
-  momentumRateDisplay.textContent = `per second: ${momentumPerSecond.toFixed(2)}`;
+  if (momentumDisplay && momentumRateDisplay) {
+    momentumDisplay.textContent = momentum.toFixed(2);
+    momentumRateDisplay.textContent = `per second: ${momentumPerSecond.toFixed(2)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
   }
 }
+
 
 function saveGame() {
   const saveData = {
