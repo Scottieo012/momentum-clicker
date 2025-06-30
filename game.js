@@ -150,12 +150,8 @@ teaser.style.display = "none";  // Hidden by default
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
         updateMomentumDisplay();
-  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
-      
-  updateShardCount();
-  loadGame();
-  updateMomentumDisplay();
-  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
+        updateShardCount();
+        updateMomentumDisplay();
   renderAllCardsOnce();
   refreshCardStates();
 
