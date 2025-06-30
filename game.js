@@ -45,6 +45,9 @@ let challengeContainer;
 function updateMomentumDisplay() {
   momentumDisplay.textContent = momentum.toFixed(2);
   momentumRateDisplay.textContent = `per second: ${momentumPerSecond.toFixed(2)}`;
+  } else {
+    console.error("Momentum display DOM elements not initialized.");
+  }
 }
 
 function saveGame() {
@@ -147,10 +150,12 @@ teaser.style.display = "none";  // Hidden by default
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
         updateMomentumDisplay();
+  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
       
   updateShardCount();
   loadGame();
   updateMomentumDisplay();
+  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
   renderAllCardsOnce();
   refreshCardStates();
 
@@ -228,13 +233,13 @@ function loop() {
   momentum += momentumPerSecond * delta;
 
   updateMomentumDisplay();
+  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
 
   const roundedMomentum = Math.floor(momentum);
   if (roundedMomentum !== lastMomentumRounded) {
     lastMomentumRounded = roundedMomentum;
     refreshCardStates();
   
-    const now = Date.now();
     if (now - lastSaveTime > 3000) { // only save every 3 seconds
       saveGame();
       lastSaveTime = now;
@@ -299,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateShardCount();
   loadGame();
   updateMomentumDisplay();
+  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
   renderAllCardsOnce();
   refreshCardStates();
   loop(); // Moved here to ensure button + listeners are active
