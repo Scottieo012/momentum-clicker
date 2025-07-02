@@ -211,6 +211,11 @@ function refreshCardStates() {
     } else if (momentum < cost) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
+      if (teaser && desc) {
+        teaser.style.display = "none";
+        desc.style.display = "block";
+      }
+    }
     } else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
@@ -218,6 +223,10 @@ function refreshCardStates() {
       cd.className = "cooldown-timer";
       cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
       cardDiv.appendChild(cd);
+      if (teaser && desc) {
+        teaser.style.display = "none";
+        desc.style.display = "block";
+      }
     }
   });
 }
