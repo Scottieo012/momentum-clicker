@@ -165,6 +165,7 @@ teaser.style.display = "none";  // Hidden by default
 
     cardDiv.appendChild(title);
     cardDiv.appendChild(desc);
+    cardDiv.appendChild(teaser);
     const footer = document.createElement("div");
     footer.className = "card-footer";
     footer.appendChild(costInfo);
