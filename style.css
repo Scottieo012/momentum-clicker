@@ -141,6 +141,7 @@ h1 {
   background-color: #000 !important;
 }
 
+/*
 .blacked-out::after {
   content: "Requires more Momentum...";
   position: absolute;
@@ -152,6 +153,7 @@ h1 {
   text-align: center;
   pointer-events: none;
 }
+*/
 
 .grayed-out {
   opacity: 0.6;
