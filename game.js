@@ -231,7 +231,6 @@ function loop() {
   momentum += momentumPerSecond * delta;
 
   updateMomentumDisplay();
-  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding, "delta:", delta);
 
   const roundedMomentum = Math.floor(momentum);
   if (roundedMomentum !== lastMomentumRounded) {
@@ -302,7 +301,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateShardCount();
   loadGame();
   updateMomentumDisplay();
-  console.log("Momentum:", momentum.toFixed(2), "isHolding:", isHolding);
   renderAllCardsOnce();
   refreshCardStates();
   loop(); // Moved here to ensure button + listeners are active
