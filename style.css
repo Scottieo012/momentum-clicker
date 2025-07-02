@@ -149,21 +149,6 @@ h1 {
   padding: 5px;
 }
 
-
-/*
-.blacked-out::after {
-  content: "Requires more Momentum...";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 0.9em;
-  text-align: center;
-  pointer-events: none;
-}
-*/
-
 .grayed-out {
   opacity: 0.6;
   pointer-events: none;
