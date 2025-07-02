@@ -215,7 +215,6 @@ function refreshCardStates() {
         teaser.style.display = "none";
         desc.style.display = "block";
       }
-    }
     } else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
