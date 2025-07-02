@@ -141,6 +141,15 @@ h1 {
   background-color: #000 !important;
 }
 
+.blacked-out .teaser-text {
+  color: white !important;
+  font-style: italic;
+  display: block !important;
+  text-align: center;
+  padding: 5px;
+}
+
+
 /*
 .blacked-out::after {
   content: "Requires more Momentum...";
