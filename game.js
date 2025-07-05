@@ -5,8 +5,21 @@ let isHolding = false;
 let lastUpdate = Date.now();
 let selectedFilter = "All";
 let lastSaveTime = 0;
-
 let lastMomentumRounded = -1;
+
+const tierCostConfig = {
+  1: { baseCost: 15, scale: 1.15 },
+  2: { baseCost: 100, scale: 1.15 },
+  3: { baseCost: 1100, scale: 1.15 },
+  4: { baseCost: 12000, scale: 1.15 },
+  5: { baseCost: 130000, scale: 1.15 }
+};
+
+function getCardIndexInTier(card) {
+  const tierCards = cards.filter(c => c.tier === card.tier);
+  const sorted = tierCards.sort((a, b) => a.id - b.id);
+  return sorted.findIndex(c => c.id === card.id);
+}
 
 function addShards(count) {
   const svg = document.querySelector(".momentum-overlay");
@@ -144,7 +157,7 @@ teaser.style.display = "none";  // Hidden by default
     button.className = "action-button";
 
     button.addEventListener("click", () => {
-      const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
+      const cost = getCardCost(card) * Math.pow(1.15, card.timesCompleted);
       const now = Date.now();
       if (momentum >= cost && now >= card.cooldownEnd) {
         momentum -= cost;
@@ -184,7 +197,7 @@ function refreshCardStates() {
     const cardDiv = document.querySelector(`.challenge-card[data-card-id='${card.id}']`);
     if (!cardDiv) return;
 
-    const cost = card.baseCost * Math.pow(1.15, card.timesCompleted);
+    const cost = getCardCost(card) * Math.pow(1.15, card.timesCompleted);
     const costInfo = cardDiv.querySelector(".cost-info");
     const count = cardDiv.querySelector(".completion-count");
     const desc = cardDiv.querySelector("p:not(.cost-info):not(.completion-count):not(.cooldown-timer):not(.teaser-text)");
