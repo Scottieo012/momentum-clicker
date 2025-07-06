@@ -203,6 +203,7 @@ teaser.style.display = "none";  // Hidden by default
     footer.appendChild(costInfo);
     footer.appendChild(button);
     footer.appendChild(count);
+    footer.appendChild(reward);
     
     cardDiv.appendChild(footer);
 
