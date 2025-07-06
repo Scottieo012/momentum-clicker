@@ -166,6 +166,10 @@ teaser.style.display = "none";  // Hidden by default
     costInfo.className = "cost-info";
     const count = document.createElement("p");
     count.className = "completion-count";
+    const reward = document.createElement("p");
+    reward.className = "reward-info";
+    reward.textContent = `Reward: +${tierRewardMap[card.tier]} MP/sec`;
+
 
     const button = document.createElement("button");
     button.textContent = "Did it";
