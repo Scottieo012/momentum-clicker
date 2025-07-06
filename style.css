@@ -227,3 +227,9 @@ h1 {
 .card-footer button {
   flex-shrink: 0;
 }
+
+.reward-info {
+  font-size: 0.85em;
+  color: #444;
+  margin-top: 4px;
+}
