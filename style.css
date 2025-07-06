@@ -229,7 +229,7 @@ h1 {
 }
 
 .reward-info {
-  font-size: 0.85em;
-  color: #444;
+  font-style: italic;
+  color: #007B7F;
   margin-top: 4px;
 }
