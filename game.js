@@ -21,6 +21,13 @@ function getCardIndexInTier(card) {
   return sorted.findIndex(c => c.id === card.id);
 }
 
+function getCardCost(card) {
+  const tierConfig = tierCostConfig[card.tier];
+  if (!tierConfig) return 0;
+  const indexInTier = getCardIndexInTier(card);
+  return tierConfig.baseCost * Math.pow(tierConfig.scale, indexInTier);
+}
+
 function addShards(count) {
   const svg = document.querySelector(".momentum-overlay");
   svg.innerHTML = ""; // Clear previous shards
