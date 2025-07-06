@@ -15,6 +15,14 @@ const tierCostConfig = {
   5: { baseCost: 130000, scale: 1.15 }
 };
 
+const tierRewardMap = {
+  1: 1,
+  2: 5,
+  3: 20,
+  4: 60,
+  5: 200
+};
+
 function getCardIndexInTier(card) {
   const tierCards = cards.filter(c => c.tier === card.tier);
   const sorted = tierCards.sort((a, b) => a.id - b.id);
@@ -168,7 +176,7 @@ teaser.style.display = "none";  // Hidden by default
       const now = Date.now();
       if (momentum >= cost && now >= card.cooldownEnd) {
         momentum -= cost;
-        momentumPerSecond += card.multiplier;
+        momentumPerSecond += tierRewardMap[card.tier];
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
         updateMomentumDisplay();
