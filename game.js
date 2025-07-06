@@ -176,7 +176,7 @@ teaser.style.display = "none";  // Hidden by default
     button.className = "action-button";
 
     button.addEventListener("click", () => {
-      const cost = getCardCost(card) * Math.pow(1.15, card.timesCompleted);
+      const cost = getCardCost(card);
       const now = Date.now();
       if (momentum >= cost && now >= card.cooldownEnd) {
         momentum -= cost;
@@ -217,7 +217,7 @@ function refreshCardStates() {
     const cardDiv = document.querySelector(`.challenge-card[data-card-id='${card.id}']`);
     if (!cardDiv) return;
 
-    const cost = getCardCost(card) * Math.pow(1.15, card.timesCompleted);
+    const cost = getCardCost(card);
     const costInfo = cardDiv.querySelector(".cost-info");
     const count = cardDiv.querySelector(".completion-count");
     const desc = cardDiv.querySelector("p:not(.cost-info):not(.completion-count):not(.cooldown-timer):not(.teaser-text)");
