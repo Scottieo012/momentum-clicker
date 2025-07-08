@@ -23,17 +23,18 @@ const tierRewardMap = {
   5: 200
 };
 
-function getCardIndexInTier(card) {
-  const tierCards = cards.filter(c => c.tier === card.tier);
-  const sorted = tierCards.sort((a, b) => a.id - b.id);
-  return sorted.findIndex(c => c.id === card.id);
+function getTierCompletions(tier) {
+  return cards
+    .filter(c => c.tier === tier)
+    .reduce((sum, c) => sum + (c.timesCompleted || 0), 0);
 }
 
 function getCardCost(card) {
   const tierConfig = tierCostConfig[card.tier];
   if (!tierConfig) return 0;
-  const indexInTier = getCardIndexInTier(card);
-  return tierConfig.baseCost * Math.pow(tierConfig.scale, indexInTier);
+
+  const completionsInTier = getTierCompletions(card.tier);
+  return tierConfig.baseCost * Math.pow(tierConfig.scale, completionsInTier);
 }
 
 function addShards(count) {
