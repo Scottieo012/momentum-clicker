@@ -129,11 +129,37 @@ function resetGame() {
   location.reload();
 }
 
+function getMostAffordableCard(filter) {
+  const pool = filter === "All" ? cards : cards.filter(c => c.tag === filter);
+  const now = Date.now();
+
+  const affordable = pool.filter(c => {
+    const cost = getCardCost(c);
+    return momentum >= cost && now >= c.cooldownEnd;
+  });
+
+  if (affordable.length === 0) return null;
+
+  const idx = Math.floor(Math.random() * affordable.length);
+  return affordable[idx];
+}
+
 function getRandomCardsByFilter(filter, count = 3) {
-  const filtered = filter === "All" ? cards : cards.filter(c => c.tag === filter);
-  const available = filtered.filter(c => !c.hidden);
+  const pool = filter === "All" ? cards : cards.filter(c => c.tag === filter);
+  const available = pool.filter(c => !c.hidden);
   const result = [];
 
+  // Step 1: Try to add 1 affordable card first
+  const affordableCard = getMostAffordableCard(filter);
+  if (affordableCard) {
+    result.push(affordableCard);
+
+    // Remove it from available pool so it’s not duplicated
+    const index = available.findIndex(c => c.id === affordableCard.id);
+    if (index !== -1) available.splice(index, 1);
+  }
+
+  // Step 2: Add remaining random cards from available pool
   while (result.length < count && available.length > 0) {
     const idx = Math.floor(Math.random() * available.length);
     result.push(available.splice(idx, 1)[0]);
