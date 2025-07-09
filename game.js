@@ -100,7 +100,7 @@ function loadGame() {
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      momentum = data.momentum !== undefined ? data.momentum : 15; // Default to 10 MP if not present
+      momentum = data.momentum !== undefined ? data.momentum : 10; // Default to 10 MP if not present
       momentumPerSecond = data.momentumPerSecond || 0;
       if (data.cards && Array.isArray(data.cards)) {
         data.cards.forEach(savedCard => {
@@ -113,11 +113,11 @@ function loadGame() {
       }
     } catch (e) {
       console.error("Failed to load save data:", e);
-      momentum = 15; // fallback to 10 MP
+      momentum = 10; // fallback to 10 MP
     }
   } else {
     // No save found — first-time player
-    momentum = 15;
+    momentum = 10;
   }
 }
 
@@ -138,15 +138,15 @@ function getMostAffordableCard(filter) {
   const pool = filter === "All" ? cards : cards.filter(c => c.tag === filter);
   const now = Date.now();
 
-  const affordable = pool.filter(c => {
+  const affordableEnough = pool.filter(c => {
     const cost = getCardCost(c);
-    return momentum >= cost && now >= c.cooldownEnd;
+    return momentum >= cost * 0.5 && now >= c.cooldownEnd;
   });
 
-  if (affordable.length === 0) return null;
+  if (affordableEnough.length === 0) return null;
 
-  const idx = Math.floor(Math.random() * affordable.length);
-  return affordable[idx];
+  const idx = Math.floor(Math.random() * affordableEnough.length);
+  return affordableEnough[idx];
 }
 
 function getRandomCardsByFilter(filter, count = 3) {
