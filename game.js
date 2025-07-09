@@ -96,10 +96,11 @@ function saveGame() {
 
 function loadGame() {
   const saved = localStorage.getItem("momentumGameSave");
+
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      momentum = data.momentum || 0;
+      momentum = data.momentum !== undefined ? data.momentum : 10; // Default to 10 MP if not present
       momentumPerSecond = data.momentumPerSecond || 0;
       if (data.cards && Array.isArray(data.cards)) {
         data.cards.forEach(savedCard => {
@@ -112,7 +113,11 @@ function loadGame() {
       }
     } catch (e) {
       console.error("Failed to load save data:", e);
+      momentum = 10; // fallback to 10 MP
     }
+  } else {
+    // No save found — first-time player
+    momentum = 10;
   }
 }
 
