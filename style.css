@@ -157,6 +157,13 @@ h1 {
   padding: 5px;
 }
 
+.blacked-out .tier-label {
+  color: #aaa !important;
+  display: block !important;
+  text-align: right;
+  font-style: italic;
+}
+
 .grayed-out {
   opacity: 0.6;
   pointer-events: none;
