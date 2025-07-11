@@ -229,18 +229,18 @@ function renderAllCardsOnce() {
         saveGame();
       }
     });
-
-    cardDiv.appendChild(title);
-    footer.appendChild(tierLabel);
-    cardDiv.appendChild(desc);
-    cardDiv.appendChild(teaser);
+    
     const footer = document.createElement("div");
     footer.className = "card-footer";
+    footer.appendChild(tierLabel);
     footer.appendChild(costInfo);
     footer.appendChild(button);
     footer.appendChild(count);
     footer.appendChild(reward);
     
+    cardDiv.appendChild(title);
+    cardDiv.appendChild(desc);
+    cardDiv.appendChild(teaser);
     cardDiv.appendChild(footer);
 
     challengeContainer.appendChild(cardDiv);
