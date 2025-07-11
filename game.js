@@ -230,19 +230,19 @@ function renderAllCardsOnce() {
       }
     });
     
-    // First row container
+    // First row: Cost (left), Reward (right)
     const row1 = document.createElement("div");
-    row1.className = "card-footer";
+    row1.className = "card-footer two-col-row";
     row1.appendChild(costInfo);
-    row1.appendChild(button);
-    row1.appendChild(count);
+    row1.appendChild(reward);
     
-    // Second row container
+    // Second row: Tier (left), Button (center), Completed (right)
     const row2 = document.createElement("div");
-    row2.className = "card-footer bottom-row";
+    row2.className = "card-footer three-col-row";
     row2.appendChild(tierLabel);
-    row2.appendChild(reward);
-    
+    row2.appendChild(button);
+    row2.appendChild(count);
+
     cardDiv.appendChild(title);
     cardDiv.appendChild(desc);
     cardDiv.appendChild(teaser);
