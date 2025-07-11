@@ -283,14 +283,22 @@ function refreshCardStates() {
         teaser.style.display = "block";
         desc.style.display = "none";
       }
-    } else if (momentum < cost) {
+      if (count) count.style.visibility = "hidden";
+      if (tierLabel) tierLabel.style.visibility = "visible";
+    }
+
+      else if (momentum < cost) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
       if (teaser && desc) {
         teaser.style.display = "none";
         desc.style.display = "block";
       }
-    } else if (now < card.cooldownEnd) {
+      if (count) count.style.visibility = "visible";
+      if (tierLabel) tierLabel.style.visibility = "visible";
+      } 
+    
+      else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
       const cd = document.createElement("p");
@@ -301,6 +309,8 @@ function refreshCardStates() {
         teaser.style.display = "none";
         desc.style.display = "block";
       }
+      if (count) count.style.visibility = "visible";
+      if (tierLabel) tierLabel.style.visibility = "visible";
     }
   });
 }
