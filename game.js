@@ -230,18 +230,24 @@ function renderAllCardsOnce() {
       }
     });
     
-    const footer = document.createElement("div");
-    footer.className = "card-footer";
-    footer.appendChild(tierLabel);
-    footer.appendChild(costInfo);
-    footer.appendChild(button);
-    footer.appendChild(count);
-    footer.appendChild(reward);
+    // First row container
+    const row1 = document.createElement("div");
+    row1.className = "card-footer";
+    row1.appendChild(costInfo);
+    row1.appendChild(button);
+    row1.appendChild(count);
+    
+    // Second row container
+    const row2 = document.createElement("div");
+    row2.className = "card-footer bottom-row";
+    row2.appendChild(tierLabel);
+    row2.appendChild(reward);
     
     cardDiv.appendChild(title);
     cardDiv.appendChild(desc);
     cardDiv.appendChild(teaser);
-    cardDiv.appendChild(footer);
+    cardDiv.appendChild(row1);
+    cardDiv.appendChild(row2);
 
     challengeContainer.appendChild(cardDiv);
   });
