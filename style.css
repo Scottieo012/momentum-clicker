@@ -171,7 +171,7 @@ h1 {
 .blacked-out .tier-label {
   color: #aaa !important;
   display: block !important;
-  text-align: right;
+  text-align: left;
   font-style: italic;
 }
 
