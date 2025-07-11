@@ -265,6 +265,7 @@ function refreshCardStates() {
     const desc = cardDiv.querySelector("p:not(.cost-info):not(.completion-count):not(.cooldown-timer):not(.teaser-text)");
     const teaser = cardDiv.querySelector(".teaser-text");
     const button = cardDiv.querySelector(".action-button");
+    const tierLabel = cardDiv.querySelector(".tier-label");
 
     cardDiv.classList.remove("blacked-out", "grayed-out");
     button.disabled = false;
