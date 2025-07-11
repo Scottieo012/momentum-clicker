@@ -186,13 +186,16 @@ function renderAllCardsOnce() {
 
     const title = document.createElement("h3");
     title.textContent = card.title;
+    const tierLabel = document.createElement("p");
+    tierLabel.className = "tier-label";
+    tierLabel.textContent = `Tier ${card.tier}`;
     const desc = document.createElement("p");
     
-desc.textContent = card.description;
-const teaser = document.createElement("p");
-teaser.className = "teaser-text";
-teaser.textContent = card.teaser || "";
-teaser.style.display = "none";  // Hidden by default
+    desc.textContent = card.description;
+    const teaser = document.createElement("p");
+    teaser.className = "teaser-text";
+    teaser.textContent = card.teaser || "";
+    teaser.style.display = "none";  // Hidden by default
 
     const costInfo = document.createElement("p");
     costInfo.className = "cost-info";
@@ -228,6 +231,7 @@ teaser.style.display = "none";  // Hidden by default
     });
 
     cardDiv.appendChild(title);
+    cardDiv.appendChild(tierLabel);
     cardDiv.appendChild(desc);
     cardDiv.appendChild(teaser);
     const footer = document.createElement("div");
