@@ -254,6 +254,24 @@ h1 {
   flex-shrink: 0;
 }
 
+.card-footer.two-col-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+}
+
+.card-footer.three-col-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em;
+  gap: 6px;
+}
+
+.card-footer.three-col-row .action-button {
+  margin: 0 auto;
+}
+
 .reward-info {
   font-style: italic;
   color: #007B7F;
