@@ -125,6 +125,14 @@ h1 {
   font-size: 0.9em;
 }
 
+.tier-label {
+  font-size: 0.75em;
+  color: #777;
+  margin-top: -4px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
 .filter-buttons {
   margin: 15px 0;
 }
