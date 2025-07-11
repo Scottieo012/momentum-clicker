@@ -231,7 +231,7 @@ function renderAllCardsOnce() {
     });
 
     cardDiv.appendChild(title);
-    cardDiv.appendChild(tierLabel);
+    footer.appendChild(tierLabel);
     cardDiv.appendChild(desc);
     cardDiv.appendChild(teaser);
     const footer = document.createElement("div");
