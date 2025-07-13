@@ -219,8 +219,8 @@ function renderAllCardsOnce() {
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
         // Show reflection modal with this card's prompts
-        document.getElementById("modal-priming").textContent = card.priming || "";
-        document.getElementById("modal-reflection").textContent = card.reflection || "";
+        document.getElementById("modal-priming").textContent = card.priming_prompt || "";
+        document.getElementById("modal-reflection").textContent = card.reflection_prompt || "";
         document.getElementById("reflectionModal").style.display = "block";
         updateMomentumDisplay();
         updateShardCount();
