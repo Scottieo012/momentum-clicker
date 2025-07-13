@@ -286,9 +286,10 @@ function refreshCardStates() {
       }
       if (count) count.style.visibility = "hidden";
       if (tierLabel) tierLabel.style.visibility = "visible";
+      if (reward) reward.style.visibility = "hidden";  // HIDE REWARD
     }
 
-      else if (momentum < cost) {
+    else if (momentum < cost) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
       if (teaser && desc) {
@@ -297,9 +298,10 @@ function refreshCardStates() {
       }
       if (count) count.style.visibility = "visible";
       if (tierLabel) tierLabel.style.visibility = "visible";
-      } 
-    
-      else if (now < card.cooldownEnd) {
+      if (reward) reward.style.visibility = "visible";  // SHOW REWARD
+    }
+
+    else if (now < card.cooldownEnd) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
       const cd = document.createElement("p");
@@ -312,7 +314,9 @@ function refreshCardStates() {
       }
       if (count) count.style.visibility = "visible";
       if (tierLabel) tierLabel.style.visibility = "visible";
+      if (reward) reward.style.visibility = "visible";  // SHOW REWARD
     }
+
   });
 }
 
