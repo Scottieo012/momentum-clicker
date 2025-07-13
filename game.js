@@ -218,6 +218,10 @@ function renderAllCardsOnce() {
         momentumPerSecond += tierRewardMap[card.tier];
         card.timesCompleted++;
         card.cooldownEnd = now + 60 * 60 * 1000;
+        // Show reflection modal with this card's prompts
+        document.getElementById("modal-priming").textContent = card.priming || "";
+        document.getElementById("modal-reflection").textContent = card.reflection || "";
+        document.getElementById("reflectionModal").style.display = "block";
         updateMomentumDisplay();
         updateShardCount();
         updateMomentumDisplay();
@@ -369,6 +373,10 @@ document.addEventListener("DOMContentLoaded", () => {
   momentumRateDisplay = document.getElementById("momentumRate");
   challengeContainer = document.getElementById("challengeContainer");
 
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("reflectionModal").style.display = "none";
+  });
+  
   const earnButton = document.getElementById("earnButton");
 
   earnButton.addEventListener("mousedown", () => {
