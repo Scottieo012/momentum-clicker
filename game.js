@@ -266,7 +266,8 @@ function refreshCardStates() {
     const teaser = cardDiv.querySelector(".teaser-text");
     const button = cardDiv.querySelector(".action-button");
     const tierLabel = cardDiv.querySelector(".tier-label");
-
+    const reward = cardDiv.querySelector(".reward-info");
+    
     cardDiv.classList.remove("blacked-out", "grayed-out");
     button.disabled = false;
 
