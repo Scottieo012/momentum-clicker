@@ -74,7 +74,7 @@ let challengeContainer;
 function updateMomentumDisplay() {
   if (momentumDisplay && momentumRateDisplay) {
     momentumDisplay.textContent = momentum.toFixed(2);
-    momentumRateDisplay.textContent = `per second: ${momentumPerSecond.toFixed(2)}`;
+    momentumRateDisplay.textContent = `per second (passive): ${momentumPerSecond.toFixed(2)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
   }
