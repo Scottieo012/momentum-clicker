@@ -225,7 +225,6 @@ function renderAllCardsOnce() {
         updateMomentumDisplay();
         updateShardCount();
         updateMomentumDisplay();
-  renderAllCardsOnce();
   refreshCardStates();
 
 
