@@ -205,11 +205,11 @@ h1 {
   pointer-events: none;
 }
 
-.shard.tier-1 { --orbit-radius: 40px; }
-.shard.tier-2 { --orbit-radius: 55px; }
-.shard.tier-3 { --orbit-radius: 70px; }
-.shard.tier-4 { --orbit-radius: 85px; }
-.shard.tier-5 { --orbit-radius: 100px; }
+.shard.tier-1 { --orbit-radius: 70px; }
+.shard.tier-2 { --orbit-radius: 80px; }
+.shard.tier-3 { --orbit-radius: 90px; }
+.shard.tier-4 { --orbit-radius: 100px; }
+.shard.tier-5 { --orbit-radius: 110px; }
 
 
 @keyframes orbit {
