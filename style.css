@@ -43,10 +43,13 @@ h1 {
 
 /* Base momentum button */
 .earn-button {
-  position: relative;
+  position: absolute;
   z-index: 1;
+  top: 50%;
+  left: 50%;
   width: 120px;
   height: 120px;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   background: radial-gradient(circle, #a8dadc, #457b9d);
   border: none;
@@ -182,17 +185,18 @@ h1 {
 
 .momentum-wrapper {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
   margin: 0 auto;
 }
 
 .momentum-overlay {
   position: absolute;
-  top: -40px;
-  left: 0;
-  width: 200px;
-  height: 200px;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
 }
