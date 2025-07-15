@@ -58,19 +58,29 @@ function addShards(count) {
   const svg = document.querySelector(".momentum-overlay");
   svg.innerHTML = ""; // Clear previous shards
 
-  for (let i = 0; i < count; i++) {
+  let completedShards = [];
+
+  // Collect all completed cards and their tiers
+  cards.forEach(card => {
+    for (let i = 0; i < card.timesCompleted; i++) {
+      completedShards.push(card.tier);
+    }
+  });
+
+  completedShards.forEach((tier, index) => {
     const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     shard.setAttribute("cx", "100");
     shard.setAttribute("cy", "100");
     shard.setAttribute("r", "6");
-    shard.classList.add("shard");
+    shard.classList.add("shard", `tier-${tier}`);
 
-    // Add unique animation delay via style attribute
-    shard.style.animationDelay = `${(i * 360 / count) / 60}s`; // evenly spread
+    // Distribute animation delays to avoid clustering
+    shard.style.animationDelay = `${(index * 360 / count) / 60}s`;
 
     svg.appendChild(shard);
-  }
+  });
 }
+
 
 function updateShardCount() {
   let completedCount = 0;
