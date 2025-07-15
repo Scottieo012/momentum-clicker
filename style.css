@@ -212,7 +212,7 @@ h1 {
 
 
 .shard.tier-1 {
-  --orbit-radius: 70px;
+  --orbit-radius: 150px;
   animation-duration: 3s;
   r: 4;
   fill: #c0c0c0;
