@@ -421,9 +421,8 @@ document.addEventListener("DOMContentLoaded", () => {
     earnButton.classList.remove("holding");
   });
 
-
-  updateShardCount();
   loadGame();
+  updateShardCount();
   updateMomentumDisplay();
   renderAllCardsOnce();
   refreshCardStates();
