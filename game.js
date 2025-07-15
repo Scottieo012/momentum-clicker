@@ -32,9 +32,26 @@ function getTierCompletions(tier) {
 function getCardCost(card) {
   const tierConfig = tierCostConfig[card.tier];
   if (!tierConfig) return 0;
-
   const completionsInTier = getTierCompletions(card.tier);
   return tierConfig.baseCost * Math.pow(tierConfig.scale, completionsInTier);
+}
+
+function abbreviateNumber(num) {
+  const suffixes = [
+    "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"
+  ];
+  
+  if (num < 1000) return num.toFixed(2);
+
+  let tier = Math.floor(Math.log10(num) / 3);
+  
+  if (tier >= suffixes.length) {
+    return num.toExponential(2); // Fallback to scientific notation
+  }
+
+  const suffix = suffixes[tier];
+  const scaled = num / Math.pow(10, tier * 3);
+  return scaled.toFixed(2) + suffix;
 }
 
 function addShards(count) {
@@ -73,8 +90,8 @@ let challengeContainer;
 
 function updateMomentumDisplay() {
   if (momentumDisplay && momentumRateDisplay) {
-    momentumDisplay.textContent = momentum.toFixed(2);
-    momentumRateDisplay.textContent = `per second (passive): ${momentumPerSecond.toFixed(2)}`;
+    momentumDisplay.textContent = abbreviateNumber(momentum);
+    momentumRateDisplay.textContent = `per second (passive): ${abbreviateNumber(momentumPerSecond)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
   }
@@ -203,7 +220,7 @@ function renderAllCardsOnce() {
     count.className = "completion-count";
     const reward = document.createElement("p");
     reward.className = "reward-info";
-    reward.textContent = `Reward: +${tierRewardMap[card.tier]} MP/sec`;
+    reward.textContent = `Reward: +${abbreviateNumber(tierRewardMap[card.tier])} MP/sec`;
 
 
     const button = document.createElement("button");
@@ -274,7 +291,7 @@ function refreshCardStates() {
     cardDiv.classList.remove("blacked-out", "grayed-out");
     button.disabled = false;
 
-    costInfo.textContent = `Cost: ${cost.toFixed(2)} MP`;
+    costInfo.textContent = `Cost: ${abbreviateNumber(cost)} MP`;
     count.textContent = `Completed: ${card.timesCompleted}`;
 
     const timeRemaining = (card.cooldownEnd - now) / 1000;
