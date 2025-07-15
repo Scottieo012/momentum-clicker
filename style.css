@@ -200,8 +200,8 @@ h1 {
 
 .shard {
   fill: rgba(173, 216, 230, 0.8); /* Light blue as default */
-  //animation: orbit 6s linear infinite;
-  //transform-origin: 100px 100px;
+  animation: orbit 6s linear infinite;
+  transform-origin: 100px 100px;
   pointer-events: none;
 }
 
