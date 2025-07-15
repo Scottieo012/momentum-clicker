@@ -54,45 +54,22 @@ function abbreviateNumber(num) {
   return scaled.toFixed(2) + suffix;
 }
 
-function addShards() {
+function addShards(count) {
   const svg = document.querySelector(".momentum-overlay");
-  svg.innerHTML = ""; // Clear existing shards
+  svg.innerHTML = ""; // Clear previous shards
 
-  const tierToRadius = {
-    1: 40,
-    2: 50,
-    3: 60,
-    4: 70,
-    5: 80,
-    6: 90,
-    7: 100,
-    8: 110
-  };
+  for (let i = 0; i < count; i++) {
+    const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    shard.setAttribute("cx", "100");
+    shard.setAttribute("cy", "100");
+    shard.setAttribute("r", "6");
+    shard.classList.add("shard");
 
-  let shardIndex = 0;
+    // Add unique animation delay via style attribute
+    shard.style.animationDelay = `${(i * 360 / count) / 60}s`; // evenly spread
 
-  cards.forEach(card => {
-    if (card.timesCompleted && card.timesCompleted > 0) {
-      const radius = tierToRadius[card.tier] || 40;
-
-      for (let i = 0; i < card.timesCompleted; i++) {
-        const angleDeg = (shardIndex * 360) / 50; // Evenly space shards
-        const angleRad = (angleDeg * Math.PI) / 180;
-
-        const cx = 100 + radius * Math.cos(angleRad);
-        const cy = 100 + radius * Math.sin(angleRad);
-
-        const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        shard.setAttribute("cx", cx);
-        shard.setAttribute("cy", cy);
-        shard.setAttribute("r", "5");
-        shard.classList.add("shard");
-
-        svg.appendChild(shard);
-        shardIndex++;
-      }
-    }
-  });
+    svg.appendChild(shard);
+  }
 }
 
 function updateShardCount() {
