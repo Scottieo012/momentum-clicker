@@ -198,18 +198,40 @@ h1 {
 }
 
 .shard {
-  fill: red !important;
-  //fill: rgba(200, 200, 200, 0.6);
-  animation: orbit 6s linear infinite;
+  fill: rgba(200, 200, 200, 0.6);
   transform-origin: 100px 100px;
   pointer-events: none;
+  animation-name: orbit;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
-.shard.tier-1 { --orbit-radius: 70px; }
-.shard.tier-2 { --orbit-radius: 80px; }
-.shard.tier-3 { --orbit-radius: 90px; }
-.shard.tier-4 { --orbit-radius: 100px; }
-.shard.tier-5 { --orbit-radius: 110px; }
+
+.shard.tier-1 {
+  --orbit-radius: 70px;
+  animation-duration: 3s;
+}
+
+.shard.tier-2 {
+  --orbit-radius: 80px;
+  animation-duration: 4s;
+}
+
+.shard.tier-3 {
+  --orbit-radius: 90px;
+  animation-duration: 6s;
+}
+
+.shard.tier-4 {
+  --orbit-radius: 100px;
+  animation-duration: 8s;
+}
+
+.shard.tier-5 {
+  --orbit-radius: 110px;
+  animation-duration: 10s;
+}
+
 
 
 @keyframes orbit {
