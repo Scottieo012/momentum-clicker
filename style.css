@@ -203,7 +203,7 @@ h1 {
 
 .shard {
   fill: rgba(200, 200, 200, 0.6);
-  transform-origin: 100px 100px;
+  transform-origin: 200px 200px;
   pointer-events: none;
   animation-name: orbit;
   animation-iteration-count: infinite;
