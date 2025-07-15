@@ -210,26 +210,36 @@ h1 {
 .shard.tier-1 {
   --orbit-radius: 70px;
   animation-duration: 3s;
+  r: 4;
+  fill: #c0c0c0;
 }
 
 .shard.tier-2 {
   --orbit-radius: 80px;
   animation-duration: 4s;
+  r: 5;
+  fill: #add8e6;
 }
 
 .shard.tier-3 {
   --orbit-radius: 90px;
   animation-duration: 6s;
+  r: 6;
+  fill: #87ceeb;
 }
 
 .shard.tier-4 {
   --orbit-radius: 100px;
   animation-duration: 8s;
+  r: 7;
+  fill: #00bfff;
 }
 
 .shard.tier-5 {
   --orbit-radius: 110px;
   animation-duration: 10s;
+  r: 8;
+  fill: #1e90ff;
 }
 
 
