@@ -213,9 +213,16 @@ h1 {
 
 
 @keyframes orbit {
-  0%   { transform: rotate(0deg) translate(var(--orbit-radius)) rotate(0deg); }
-  100% { transform: rotate(360deg) translate(var(--orbit-radius)) rotate(-360deg); }
+  0% {
+    transform: rotate(var(--shard-angle)) translate(var(--orbit-radius)) rotate(calc(-1 * var(--shard-angle)));
+  }
+  100% {
+    transform: rotate(calc(360deg + var(--shard-angle)))
+               translate(var(--orbit-radius))
+               rotate(calc(-360deg - var(--shard-angle)));
+  }
 }
+
 
 
 /* Calm pulse effect */
