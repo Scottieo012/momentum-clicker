@@ -45,7 +45,6 @@ h1 {
 .earn-button {
   border: 2px solid green;
   position: absolute;
-  z-index: 1;
   top: 50%;
   left: 50%;
   width: 120px;
@@ -188,7 +187,7 @@ h1 {
   position: relative;
   height: 200px; /* Adjust as needed to define vertical footprint */
   overflow: visible;
-  z-index: 1;
+  z-index: 0;
 }
 
 .momentum-wrapper {
@@ -198,6 +197,7 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 0;
 }
 
 .momentum-overlay {
