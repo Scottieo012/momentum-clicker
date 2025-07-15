@@ -54,32 +54,44 @@ function abbreviateNumber(num) {
   return scaled.toFixed(2) + suffix;
 }
 
-function addShards(count) {
+function addShards() {
   const svg = document.querySelector(".momentum-overlay");
   svg.innerHTML = ""; // Clear previous shards
 
-  let completedShards = [];
+  const shardsByTier = {};
 
-  // Collect all completed cards and their tiers
+  // Group completed cards by tier
   cards.forEach(card => {
+    if (!shardsByTier[card.tier]) shardsByTier[card.tier] = [];
     for (let i = 0; i < card.timesCompleted; i++) {
-      completedShards.push(card.tier);
+      shardsByTier[card.tier].push(card);
     }
   });
 
-  completedShards.forEach((tier, index) => {
-    const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    shard.setAttribute("cx", "100");
-    shard.setAttribute("cy", "100");
-    shard.setAttribute("r", "6");
-    shard.classList.add("shard", `tier-${tier}`);
+  // For each tier group, space shards evenly around the circle
+  Object.keys(shardsByTier).forEach(tierKey => {
+    const tier = parseInt(tierKey);
+    const shardGroup = shardsByTier[tier];
+    const total = shardGroup.length;
 
-    // Distribute animation delays to avoid clustering
-    shard.style.animationDelay = `${(index * 360 / count) / 60}s`;
+    shardGroup.forEach((card, i) => {
+      const angleDeg = (360 / total) * i;
 
-    svg.appendChild(shard);
+      const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      shard.setAttribute("cx", "100");
+      shard.setAttribute("cy", "100");
+      shard.setAttribute("r", "6");
+      shard.classList.add("shard", `tier-${tier}`);
+
+      // Static transform to assign rotation offset
+      shard.style.transform = `rotate(${angleDeg}deg)`;
+      shard.style.animationDelay = "0s"; // All animate in unison now
+
+      svg.appendChild(shard);
+    });
   });
 }
+
 
 
 function updateShardCount() {
