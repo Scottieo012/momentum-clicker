@@ -78,8 +78,8 @@ function addShards() {
       const angleDeg = (360 / total) * i;
 
       const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      shard.setAttribute("cx", "100");
-      shard.setAttribute("cy", "100");
+      shard.setAttribute("cx", "200");
+      shard.setAttribute("cy", "200");
       shard.setAttribute("r", "6");
       shard.classList.add("shard", `tier-${tier}`);
 
