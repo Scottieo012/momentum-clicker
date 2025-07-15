@@ -198,17 +198,19 @@ h1 {
 }
 
 .shard {
-  fill: rgba(200, 200, 200, 0.6);
+  fill: red !important;
+  //fill: rgba(200, 200, 200, 0.6);
   animation: orbit 6s linear infinite;
   transform-origin: 100px 100px;
   pointer-events: none;
 }
 
-.tier-1 { --orbit-radius: 40px; }
-.tier-2 { --orbit-radius: 55px; }
-.tier-3 { --orbit-radius: 70px; }
-.tier-4 { --orbit-radius: 85px; }
-.tier-5 { --orbit-radius: 100px; }
+.shard.tier-1 { --orbit-radius: 40px; }
+.shard.tier-2 { --orbit-radius: 55px; }
+.shard.tier-3 { --orbit-radius: 70px; }
+.shard.tier-4 { --orbit-radius: 85px; }
+.shard.tier-5 { --orbit-radius: 100px; }
+
 
 @keyframes orbit {
   0%   { transform: rotate(0deg) translate(var(--orbit-radius)) rotate(0deg); }
