@@ -68,7 +68,7 @@ function addShards() {
     }
   });
 
-  // For each tier group, space shards evenly around the circle
+  // For each tier group, space shards evenly around their orbit ring
   Object.keys(shardsByTier).forEach(tierKey => {
     const tier = parseInt(tierKey);
     const shardGroup = shardsByTier[tier];
@@ -83,14 +83,15 @@ function addShards() {
       shard.setAttribute("r", "6");
       shard.classList.add("shard", `tier-${tier}`);
 
-      // Static transform to assign rotation offset
-      shard.style.transform = `rotate(${angleDeg}deg)`;
-      shard.style.animationDelay = "0s"; // All animate in unison now
+      // Apply unique angle per shard
+      shard.style.setProperty('--shard-angle', `${angleDeg}deg`);
+      shard.style.animationDelay = "0s"; // Animate all shards in unison
 
       svg.appendChild(shard);
     });
   });
 }
+
 
 
 
