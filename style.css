@@ -387,3 +387,9 @@ h1 {
   cursor: pointer;
 }
 
+.filter-buttons,
+#cardRefreshContainer,
+.challenge-container {
+  position: relative;
+  z-index: 10;
+}
