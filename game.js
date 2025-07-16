@@ -76,46 +76,21 @@ function addShards() {
 
     shardGroup.forEach((card, i) => {
       const angleDeg = (360 / total) * i;
-      let shard;
 
-      switch (tier) {
-        case 1:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          shard.setAttribute("r", "4");
-          break;
-        case 2:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-          shard.setAttribute("width", "8");
-          shard.setAttribute("height", "8");
-          shard.setAttribute("x", "196");
-          shard.setAttribute("y", "196");
-          break;
-        case 3:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shard.setAttribute("points", "200,192 208,208 192,208");
-          break;
-        case 4:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shard.setAttribute("points", "200,190 210,200 200,210 190,200");
-          break;
-        case 5:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shard.setAttribute("points", "200,190 209,196 205,208 195,208 191,196");
-          break;
-        default:
-          shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          shard.setAttribute("r", "5");
-      }
-
+      const shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       shard.setAttribute("cx", "200");
       shard.setAttribute("cy", "200");
+      shard.setAttribute("r", "6");
       shard.classList.add("shard", `tier-${tier}`);
+
+      // Apply unique angle per shard
       shard.style.setProperty('--shard-angle', `${angleDeg}deg`);
+      shard.style.animationDelay = "0s"; // Animate all shards in unison
+
       svg.appendChild(shard);
     });
   });
 }
-
 
 
 
