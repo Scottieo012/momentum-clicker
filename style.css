@@ -205,7 +205,7 @@ h1 {
   left: 50%;
   width: 400px;
   height: 400px;
-  transform: translate(calc(-50% - 15px), calc(-50% - 165px));
+  transform: translate(calc(-50% - 5px), calc(-50% - 160px));
   pointer-events: none;
   z-index: 0;
 }
