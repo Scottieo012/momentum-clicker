@@ -258,7 +258,6 @@ h1 {
 /* Rotate shard shapes around center */
 .shard polygon,
 .shard rect {
-  transform-origin: 200px 200px;
   transform-box: fill-box;
   transform-origin: center;
 }
