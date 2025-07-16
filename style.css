@@ -186,28 +186,28 @@ h1 {
   position: relative;
   height: 200px; /* Adjust as needed to define vertical footprint */
   overflow: visible;
-  z-index: 0;
+  z-index: -1;
 }
 
 .momentum-wrapper {
-  position: absolute;
+  position: relative;
   width: 400px;
   height: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: -1;
 }
 
 .momentum-overlay {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   width: 400px;
   height: 400px;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .shard {
