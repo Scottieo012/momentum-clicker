@@ -391,3 +391,24 @@ h1 {
   position: relative;
   z-index: 10;
 }
+
+.shard-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.momentum-overlay {
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+}
