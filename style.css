@@ -210,6 +210,12 @@ h1 {
   z-index: 0;
 }
 
+@media (max-width: 600px) {
+  .momentum-overlay {
+    transform: translate(calc(-50% - 8px), calc(-50% - 110px));
+  }
+}
+
 .shard {
   fill: rgba(200, 200, 200, 0.6);
   transform-origin: 200px 200px;
