@@ -212,6 +212,7 @@ h1 {
 
 @media (max-width: 600px) {
   .momentum-overlay {
+    border: 2px solid red;
     transform: translate(calc(-50% - 8px), calc(-50% - 10px));
   }
 }
