@@ -259,6 +259,8 @@ h1 {
 .shard polygon,
 .shard rect {
   transform-origin: 200px 200px;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 @keyframes orbit {
