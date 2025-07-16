@@ -255,7 +255,11 @@ h1 {
   fill: #1e90ff;
 }
 
-
+/* Rotate shard shapes around center */
+.shard polygon,
+.shard rect {
+  transform-origin: 200px 200px;
+}
 
 @keyframes orbit {
   0% {
