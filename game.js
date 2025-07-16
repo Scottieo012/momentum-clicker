@@ -100,7 +100,7 @@ function addShards() {
           break;
         case 5:
           shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shard.setAttribute("points", "200,188 204,198 215,198 207,205 210,215 200,210 190,215 193,205 185,198 196,198");
+          shard.setAttribute("points", "200,190 209,196 205,208 195,208 191,196");
           break;
         default:
           shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
