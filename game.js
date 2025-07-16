@@ -68,6 +68,7 @@ function addShards() {
     }
   });
 
+  // For each tier group, space shards evenly around their orbit ring
   Object.keys(shardsByTier).forEach(tierKey => {
     const tier = parseInt(tierKey);
     const shardGroup = shardsByTier[tier];
@@ -75,48 +76,45 @@ function addShards() {
 
     shardGroup.forEach((card, i) => {
       const angleDeg = (360 / total) * i;
-      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      group.classList.add("shard", `tier-${tier}`);
-      group.style.setProperty('--shard-angle', `${angleDeg}deg`);
-
-      let shape;
+      let shard;
 
       switch (tier) {
         case 1:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          shape.setAttribute("r", "4");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          shard.setAttribute("r", "4");
           break;
         case 2:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-          shape.setAttribute("width", "8");
-          shape.setAttribute("height", "8");
-          shape.setAttribute("x", "-4");
-          shape.setAttribute("y", "-4");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+          shard.setAttribute("width", "8");
+          shard.setAttribute("height", "8");
+          shard.setAttribute("x", "196");
+          shard.setAttribute("y", "196");
           break;
         case 3:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shape.setAttribute("points", "0,-8 7,6 -7,6");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          shard.setAttribute("points", "200,192 208,208 192,208");
           break;
         case 4:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shape.setAttribute("points", "0,-8 8,0 0,8 -8,0");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          shard.setAttribute("points", "200,190 210,200 200,210 190,200");
           break;
         case 5:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          shape.setAttribute("points", "0,-10 2,-3 9,-3 3,2 5,9 0,5 -5,9 -3,2 -9,-3 -2,-3");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          shard.setAttribute("points", "200,188 204,198 215,198 207,205 210,215 200,210 190,215 193,205 185,198 196,198");
           break;
         default:
-          shape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          shape.setAttribute("r", "5");
+          shard = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          shard.setAttribute("r", "5");
       }
 
-      group.setAttribute("transform-origin", "200px 200px");
-      group.appendChild(shape);
-      svg.appendChild(group);
+      shard.setAttribute("cx", "200");
+      shard.setAttribute("cy", "200");
+      shard.classList.add("shard", `tier-${tier}`);
+      shard.style.setProperty('--shard-angle', `${angleDeg}deg`);
+      svg.appendChild(shard);
     });
   });
 }
-
 
 
 
