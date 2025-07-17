@@ -328,7 +328,17 @@ function refreshCardStates() {
     
       const cd = document.createElement("p");
       cd.className = "cooldown-timer";
-      cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
+      const hrs = Math.floor(timeRemaining / 3600);
+      const mins = Math.floor((timeRemaining % 3600) / 60);
+      const secs = Math.floor(timeRemaining % 60);
+      
+      let timeStr = "";
+      if (hrs > 0) timeStr += `${hrs}h `;
+      if (mins > 0 || hrs > 0) timeStr += `${mins}m `;
+      timeStr += `${secs}s`;
+      
+      cd.textContent = `Cooldown: ${timeStr}`;
+
       cardDiv.appendChild(cd);
     
       if (teaser && desc) {
