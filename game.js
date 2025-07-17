@@ -117,12 +117,19 @@ let challengeContainer;
 
 function updateMomentumDisplay() {
   if (momentumDisplay && momentumRateDisplay) {
+    const holdBonus = isHolding ? Math.max(1, 0.25 * momentumPerSecond) : 0;
+    const totalRate = momentumPerSecond + holdBonus;
+
     momentumDisplay.textContent = abbreviateNumber(momentum);
-    momentumRateDisplay.textContent = `per second (passive): ${abbreviateNumber(momentumPerSecond)}`;
+    momentumRateDisplay.textContent =
+      isHolding
+        ? `per second: ${abbreviateNumber(totalRate)} (holding)`
+        : `per second (passive): ${abbreviateNumber(momentumPerSecond)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
   }
 }
+
 
 
 function saveGame() {
