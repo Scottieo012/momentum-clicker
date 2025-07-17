@@ -321,45 +321,50 @@ function refreshCardStates() {
     const cooldownText = cardDiv.querySelector(".cooldown-timer");
     if (cooldownText) cooldownText.remove();
 
-    if (momentum < cost * 0.5) {
+    if (now < card.cooldownEnd) {
+      // Always show cooldown state first
+      cardDiv.classList.add("grayed-out");
+      button.disabled = true;
+    
+      const cd = document.createElement("p");
+      cd.className = "cooldown-timer";
+      cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
+      cardDiv.appendChild(cd);
+    
+      if (teaser && desc) {
+        teaser.style.display = "none";
+        desc.style.display = "block";
+      }
+      if (count) count.style.visibility = "visible";
+      if (tierLabel) tierLabel.style.visibility = "visible";
+      if (reward) reward.style.visibility = "visible";
+    
+    } else if (momentum < cost * 0.5) {
+      // Blackout only if card is NOT on cooldown
       cardDiv.classList.add("blacked-out");
       button.disabled = true;
+    
       if (teaser && desc) {
         teaser.style.display = "block";
         desc.style.display = "none";
       }
       if (count) count.style.visibility = "hidden";
       if (tierLabel) tierLabel.style.visibility = "visible";
-      if (reward) reward.style.visibility = "hidden";  // HIDE REWARD
-    }
-
-    else if (momentum < cost) {
+      if (reward) reward.style.visibility = "hidden";
+    
+    } else if (momentum < cost) {
       cardDiv.classList.add("grayed-out");
       button.disabled = true;
+    
       if (teaser && desc) {
         teaser.style.display = "none";
         desc.style.display = "block";
       }
       if (count) count.style.visibility = "visible";
       if (tierLabel) tierLabel.style.visibility = "visible";
-      if (reward) reward.style.visibility = "visible";  // SHOW REWARD
+      if (reward) reward.style.visibility = "visible";
     }
 
-    else if (now < card.cooldownEnd) {
-      cardDiv.classList.add("grayed-out");
-      button.disabled = true;
-      const cd = document.createElement("p");
-      cd.className = "cooldown-timer";
-      cd.textContent = `Cooldown: ${Math.ceil(timeRemaining)}s`;
-      cardDiv.appendChild(cd);
-      if (teaser && desc) {
-        teaser.style.display = "none";
-        desc.style.display = "block";
-      }
-      if (count) count.style.visibility = "visible";
-      if (tierLabel) tierLabel.style.visibility = "visible";
-      if (reward) reward.style.visibility = "visible";  // SHOW REWARD
-    }
 
   });
 }
