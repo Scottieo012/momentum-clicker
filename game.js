@@ -390,7 +390,7 @@ function loop() {
   lastUpdate = now;
 
   if (isHolding) {
-  const clickRate = Math.max(1, 0.25 * momentumPerSecond);
+  const clickRate = Math.max(1, 0.50 * momentumPerSecond);
   momentum += clickRate * delta;
   }
 
