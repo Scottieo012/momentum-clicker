@@ -123,8 +123,8 @@ function updateMomentumDisplay() {
     momentumDisplay.textContent = abbreviateNumber(momentum);
     momentumRateDisplay.textContent =
       isHolding
-        ? `per second: ${abbreviateNumber(totalRate)} (holding)`
-        : `per second (passive): ${abbreviateNumber(momentumPerSecond)}`;
+        ? `per second: ${abbreviateNumber(totalRate)} (+25% holding bonus)`
+        : `per second: ${abbreviateNumber(momentumPerSecond)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
   }
