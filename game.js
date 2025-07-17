@@ -444,6 +444,58 @@ document.addEventListener("DOMContentLoaded", () => {
     earnButton.classList.remove("holding");
   });
 
+  const onboardingSteps = [
+  "Welcome to <b>Momentum</b> — a little game with big transformation energy.",
+  "Hold the blue button to earn <b>Momentum Points</b>. The longer you hold, the more you gain.",
+  "Spend Momentum on <b>Challenge Cards</b>. When you complete one, you gain passive momentum per second.",
+  "Each challenge is a real-world action designed to help you grow. You choose when and how to engage.",
+  "You're ready. Momentum builds from here."
+  ];
+  
+  let currentOnboardingStep = 0;
+  
+  function showOnboardingStep() {
+    const modal = document.getElementById("onboardingModal");
+    const content = document.getElementById("onboardingContent");
+  
+    const isFinal = currentOnboardingStep === onboardingSteps.length - 1;
+    content.innerHTML = `
+      <p>${onboardingSteps[currentOnboardingStep]}</p>
+      <button onclick="nextOnboardingStep()">${isFinal ? "Let's Go" : "Next"}</button>
+      ${!isFinal ? '<button onclick="skipOnboarding()">Skip for now</button>' : ""}
+    `;
+    modal.style.display = "block";
+  }
+  
+  window.nextOnboardingStep = function () {
+    currentOnboardingStep++;
+    if (currentOnboardingStep < onboardingSteps.length) {
+      showOnboardingStep();
+    } else {
+      document.getElementById("onboardingModal").style.display = "none";
+      localStorage.setItem("onboardingComplete", "true");
+    }
+  };
+  
+  window.skipOnboarding = function () {
+    document.getElementById("onboardingModal").style.display = "none";
+    localStorage.setItem("onboardingComplete", "true");
+  };
+  
+  document.getElementById("openOnboarding").addEventListener("click", () => {
+    currentOnboardingStep = 0;
+    showOnboardingStep();
+  });
+  
+  // Auto-show onboarding if first time
+  if (!localStorage.getItem("onboardingComplete")) {
+    setTimeout(() => {
+      currentOnboardingStep = 0;
+      showOnboardingStep();
+    }, 500);
+  }
+
+  
   loadGame();
   updateShardCount();
   updateMomentumDisplay();
