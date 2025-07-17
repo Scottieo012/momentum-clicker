@@ -83,6 +83,10 @@ function addShards() {
       shard.setAttribute("r", "6");
       shard.classList.add("shard", `tier-${tier}`);
 
+      // Alternate direction by tier: even = reverse
+      const animationName = tier % 2 === 0 ? "orbit-reverse" : "orbit";
+      shard.style.animationName = animationName;
+      
       // Apply unique angle per shard
       shard.style.setProperty('--shard-angle', `${angleDeg}deg`);
       shard.style.animationDelay = "0s"; // Animate all shards in unison
