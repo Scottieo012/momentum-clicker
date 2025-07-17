@@ -445,11 +445,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const onboardingSteps = [
-    "<h2 style='text-align:center;'>Welcome <br><span style='font-size:0.8em; font-weight:normal;'>Step 1 of 5</span></h2><p>Welcome to <b>Momentum</b> — a tiny game with a big purpose: helping you build real momentum in your life. You showed up. That’s already something.</p>",
-    "<h2 style='text-align:center;'>How to Begin <br><span style='font-size:0.8em; font-weight:normal;'>Step 2 of 5</span></h2><p>Hold the blue button to generate <b>Momentum Points</b>. It’s simple. But so are most first steps.</p>",
-    "<h2 style='text-align:center;'>Real-World Growth <br><span style='font-size:0.8em; font-weight:normal;'>Step 3 of 5</span></h2><p>Spend your Momentum on <b>Challenge Cards</b>. These are real-life actions that grow both your in-game progress and your real-world power.</p>",
-    "<h2 style='text-align:center;'>Why It Matters <br><span style='font-size:0.8em; font-weight:normal;'>Step 4 of 5</span></h2><p>Each challenge is designed to stretch you, support you, or remind you who you're becoming. They’re not just tasks, they’re moments of courage.</p>",
-    "<h2 style='text-align:center;'>You're Ready <br><span style='font-size:0.8em; font-weight:normal;'>Step 5 of 5</span></h2><p>There’s no right way to play. Just begin. You can come back to this anytime. Let’s build your momentum.</p>"
+    "<h2 style='text-align:center;'>Welcome <br><span style='font-size:0.8em; font-weight:normal;'><i>Step 1 of 5</i></span></h2><p>Welcome to <b>Momentum</b> — a tiny game with a big purpose: helping you build real momentum in your life. You showed up. That’s already something.</p>",
+    "<h2 style='text-align:center;'>How to Begin <br><span style='font-size:0.8em; font-weight:normal;'><i>Step 2 of 5</i></span></h2><p>Hold the blue button to generate <b>Momentum Points</b>. It’s simple. But so are most first steps.</p>",
+    "<h2 style='text-align:center;'>Real-World Growth <br><span style='font-size:0.8em; font-weight:normal;'><i>Step 3 of 5</i></span></h2><p>Spend your Momentum on <b>Challenge Cards</b>. These are real-life actions that grow both your in-game progress and your real-world power.</p>",
+    "<h2 style='text-align:center;'>Why It Matters <br><span style='font-size:0.8em; font-weight:normal;'><i>Step 4 of 5</i></span></h2><p>Each challenge is designed to stretch you, support you, or remind you who you're becoming. They’re not just tasks, they’re moments of courage.</p>",
+    "<h2 style='text-align:center;'>You're Ready <br><span style='font-size:0.8em; font-weight:normal;'><i>Step 5 of 5</i></span></h2><p>There’s no right way to play. Just begin. You can come back to this anytime. Let’s build your momentum.</p>"
   ];
 
   
