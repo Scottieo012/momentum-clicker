@@ -396,13 +396,10 @@ h1 {
 
 .filter-buttons,
 #cardRefreshContainer,
-.challenge-container {
-  position: relative;
-  z-index: 10;
-}
-
+.challenge-container,
 #momentum,
 #momentumRate {
   position: relative;
   z-index: 10;
 }
+
