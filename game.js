@@ -117,13 +117,13 @@ let challengeContainer;
 
 function updateMomentumDisplay() {
   if (momentumDisplay && momentumRateDisplay) {
-    const holdBonus = isHolding ? Math.max(1, 0.25 * momentumPerSecond) : 0;
+    const holdBonus = isHolding ? Math.max(1, 0.50 * momentumPerSecond) : 0;
     const totalRate = momentumPerSecond + holdBonus;
 
     momentumDisplay.textContent = abbreviateNumber(momentum);
     momentumRateDisplay.textContent =
       isHolding
-        ? `per second: ${abbreviateNumber(totalRate)}<br>25% holding bonus`
+        ? `per second: ${abbreviateNumber(totalRate)} (50% bonus when holding)`
         : `per second: ${abbreviateNumber(momentumPerSecond)}`;
   } else {
     console.error("Momentum display DOM elements not initialized.");
