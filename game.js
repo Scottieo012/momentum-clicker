@@ -389,7 +389,11 @@ function loop() {
   const delta = (now - lastUpdate) / 1000;
   lastUpdate = now;
 
-  if (isHolding) momentum += delta;
+  if (isHolding) {
+  const clickRate = Math.max(1, 0.25 * momentumPerSecond);
+  momentum += clickRate * delta;
+  }
+
   momentum += momentumPerSecond * delta;
 
   updateMomentumDisplay();
